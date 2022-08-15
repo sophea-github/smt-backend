@@ -32,8 +32,9 @@ class SendMailController constructor(
               sendMailService.sendEmailWithAttachment(toEmail, subject, message, file)
           }
       }catch (e:Exception){}
-        return response.responseOBJ(200, "Success!!!")
+        return response.responseOBJ(200, "Success!!! test")
     }
+
 
 
 }
