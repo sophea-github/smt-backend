@@ -41,8 +41,8 @@ class SendMailServiceImpl : SendMailService {
         toEmail: Array<InternetAddress>,
         subject: String,
         message: String,
-        file: MultipartFile
-    ): MutableMap<String, Any>? {
+        file: MultipartFile?
+    ): MutableMap<String, Any> {
         synchronized(this) {
             val msg = mailSender.createMimeMessage()
             val helper = MimeMessageHelper(msg, true)
@@ -50,8 +50,8 @@ class SendMailServiceImpl : SendMailService {
             helper.setBcc(toEmail)
             helper.setSubject(subject)
             helper.setText(message,true)
-            val attachment = ByteArrayDataSource(file.inputStream, "application/octet-stream")
-            helper.addAttachment(file.originalFilename!!, attachment)
+            val attachment = ByteArrayDataSource(file?.inputStream, "application/octet-stream")
+            helper.addAttachment(file?.originalFilename!!, attachment)
             mailSender.send(msg)
             return response.responseOBJ(200, "Success!!!!!!!!!")
         }

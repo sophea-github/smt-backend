@@ -24,17 +24,14 @@ class SendMailController constructor(
         }
         return response.responseOBJ(200, "Success")
     }
-
     @GetMapping("/file")
-    fun sendEmailWithAttachment(@RequestParam toEmail: Array<InternetAddress>, subject: String, message: String, file: MultipartFile): MutableMap<String, Any> {
-      try {
+    fun sendEmailWithAttachment(@RequestParam toEmail: Array<InternetAddress>, subject: String, message: String, file: MultipartFile?): MutableMap<String, Any> {
+//      try {
           taskExecutor.execute {
               sendMailService.sendEmailWithAttachment(toEmail, subject, message, file)
           }
-      }catch (e:Exception){}
-        return response.responseOBJ(200, "Success!!! test")
+//      }catch (e:Exception){}
+        return response.responseOBJ(200, "Success!!")
     }
-
-
 
 }
