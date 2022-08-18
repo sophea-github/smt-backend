@@ -33,7 +33,11 @@ class ProductServiceImpl : ProductService {
         TODO("Not yet implemented")
     }
 
-    override fun delete(id: Int) = productRepository.deleteById(id)
+    override fun delete(id: Int) {
+        try {
+            productRepository.deleteById(id)
+        }catch (e: Exception){}
+    }
 
     override fun pagination(q: String?, page: Int, size: Int): Page<Product> {
         TODO("Not yet implemented")
@@ -83,8 +87,7 @@ class ProductServiceImpl : ProductService {
                 proId?.active= t.active
                 if (proId?.amt != 0 ){
                     proId?.active = "Available"
-                }else
-                {
+                }else {
                     proId?.active = "UnAvailable"
                 }
                 proId?.photo = t.photo
@@ -94,6 +97,19 @@ class ProductServiceImpl : ProductService {
                 return productRepository.save(proId!!)
         }catch (e: Exception){}
         return null
+    }
+
+    override fun updateStockProduct(id: Int, qty: Int): Product {
+        var pid = productRepository.findByIdAndStatusIsTrue(id)
+        pid?.qty = pid!!.qty.plus(qty)
+        pid?.amt = pid!!.itemVariantUom!!.conversion_factor * qty
+        if(pid?.qty > 0)
+        {
+            pid?.active = "Available"
+        }else{
+            pid?.active = "UnAvailable"
+        }
+        return  productRepository.save(pid!!)
     }
 
 

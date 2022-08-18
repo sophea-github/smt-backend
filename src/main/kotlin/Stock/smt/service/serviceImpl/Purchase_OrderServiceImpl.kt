@@ -41,8 +41,9 @@ class Purchase_OrderServiceImpl: Purchase_OrderService {
 
     override fun delete(id: Int) {
         purchaseOrderDetailrepository.deleteById(id)
-        po_repository.deleteById(id)
-
+        try {
+            po_repository.deleteById(id)
+        }catch (e: Exception){}
     }
 
     override fun addPO( empId: Int,pro_id: Int,it_id: Int, req: Purchase_OrderRequest): MutableMap<String, Any>? {

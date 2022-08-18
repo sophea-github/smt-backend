@@ -15,11 +15,8 @@ class SupplierServiceImpl : SupplierService {
     override fun pagination(q: String?, page: Int, size: Int): Page<Supplier> {
         TODO("Not yet implemented")
     }
-
     override fun findAll(): List<Supplier>? = supplierRepository.findAll()
-
     override fun saveAll(t: Supplier): Supplier? = supplierRepository.save(t)
-
     override fun updateObj(id: Int, t: Supplier): Supplier? {
         var sup = supplierRepository.findByIdAndStatusTrue(id)
         sup?.company = t.company
@@ -29,6 +26,9 @@ class SupplierServiceImpl : SupplierService {
         sup?.description = t.description
         return supplierRepository.save(sup!!)
     }
-
-    override fun delete(id: Int) = supplierRepository.deleteById(id)
+    override fun delete(id: Int) {
+        try {
+            supplierRepository.deleteById(id)
+        }catch (e: Exception){}
+    }
 }

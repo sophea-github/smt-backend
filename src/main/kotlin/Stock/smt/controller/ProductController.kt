@@ -62,5 +62,7 @@ class ProductController constructor(
         val exportToExcel = ProductExport(list)
         exportToExcel.export(response)
     }
+    @PutMapping("/product/{id}/{qty}")
+    fun updateStockProduct(@PathVariable id: Int, @PathVariable qty: Int):MutableMap<String,Any> = responseObjectMap.ResponseObj(productService.updateStockProduct(id, qty))
 
 }

@@ -21,7 +21,11 @@ class UomServiceImpl: UomService  {
         return uomRepository.save(um!!)
     }
 
-    override fun delete(id: Int) = uomRepository.deleteById(id)
+    override fun delete(id: Int) {
+        try {
+            uomRepository.deleteById(id)
+        }catch (e: Exception){}
+    }
     override fun pagination(q: String?, page: Int, size: Int): Page<Uom> {
         TODO("Not yet implemented")
     }

@@ -20,7 +20,11 @@ class Change_RateServiceImpl constructor(
         cr?.description = t.description
         return changeRaterepository.save(cr!!)
     }
-    override fun delete(id: Int) = changeRaterepository.deleteById(id)
+    override fun delete(id: Int) {
+        try {
+            changeRaterepository.deleteById(id)
+        }catch(e: Exception){}
+    }
 
     override fun pagination(q: String?, page: Int, size: Int): Page<Change_Rate> {
         TODO("Not yet implemented")

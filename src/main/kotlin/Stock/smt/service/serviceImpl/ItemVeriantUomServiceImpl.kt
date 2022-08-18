@@ -24,7 +24,11 @@ class ItemVeriantUomServiceImpl: ItemVeriantUomService {
         TODO()
     }
 
-    override fun delete(id: Int) = itemVeriantUomRepository.deleteById(id)
+    override fun delete(id: Int) {
+        try {
+            itemVeriantUomRepository.deleteById(id)
+        }catch (e: Exception){}
+    }
 
     override fun pagination(q: String?, page: Int, size: Int): Page<ItemVariantUom> {
         TODO("Not yet implemented")
