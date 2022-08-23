@@ -15,4 +15,9 @@ class ResponseObjectMap  {
         response["result:"]=obj
         return response
     }
+    fun responeMessage(msg: String): MutableMap<String,Any>{
+        var res: MutableMap<String,Any> = HashMap()
+        res["Message"] =Response(0,msg)
+        return res
+    }
 }
