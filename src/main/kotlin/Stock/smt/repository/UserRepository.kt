@@ -15,6 +15,7 @@ interface UserRepository: JpaRepository<User, Int> {
     fun findByUsername(username: String): User?
     fun existsByUsername(username: String): Boolean
     fun existsByEmail(email: String): Boolean
+    fun existsByContact(contact: String): Boolean
 
     @Query("SELECT u FROM User u WHERE u.username= :username")
     @Transactional

@@ -62,7 +62,6 @@ class UserServiceImpl: UserService {
         TODO("Not yet implemented")
     }
 
-
     override fun authenticateUser(loginDto: LoginDTO): MutableMap<String,Any> {
         var user = userRepository.getUserLoginByUsername(loginDto.username)
         val passEncoder: PasswordEncoder = BCryptPasswordEncoder()
@@ -79,55 +78,60 @@ class UserServiceImpl: UserService {
                         SecurityContextHolder.getContext().authentication = authentication
                         var token: String? = jwtTokenProvider.generateToken(authentication!!)
                         resetFailedAttempt(loginDto.username)
-                        return responseObjectMap.responeMessage("Login Success : " + token.toString())
+                        return responseObjectMap.responseOBJ(200,token.toString())
                     }
                     else {
                         increaseFailedAttempt(user)
-                        return responseObjectMap.responseOBJ(100,"Check username and password again !!")
+                        return responseObjectMap.responseOBJ(401,"Check username and password again !!")
                     }
                 } else {
                     lock(user)
-                    return responseObjectMap.responseOBJ( 100,
+                    return responseObjectMap.responseOBJ( 403,
                         "Your Account has been locked due to 3 failed attempts It will be unlocked after 3 minute"
                     )
                 }
             } else if (!user.accountNonLocked) {
                 if (unlockUser(user)) {
-                    return responseObjectMap.responseOBJ( 100,
+                    return responseObjectMap.responseOBJ( 406,
                         "Your account has been unlocked please try login again"
                     )
                 }
             }
         }else{
-            return responseObjectMap.responeMessage("login failed")
+            return responseObjectMap.responseOBJ(404,"login failed")
         }
-        return responseObjectMap.responseOBJ( 100,
+        return responseObjectMap.responseOBJ( 402,
             "Your Account has been locked It will be unlocked after 3 minute"
         )
     }
     override fun register(id: Int,req: UserDTO): MutableMap<String, Any>? {
         var role = roleRepository.findByIdAndStatusIsTrue(id)
         synchronized(this){
-            var user = userRepository.save(
-                User(
-                    id = 0,
-                    username= req.username,
-                    gender = req.gender,
-                    dob = req.dob,
-                    password = passwordConfig.passwordEndCode().encode(req.password),
-                    contact = req.contact,
-                    email = req.email,
-                    address = req.address,
-                    photo = req.photo
-                )
-            )
-            var user_role = userRolerepository.save(
-                User_Role(
-                    id = 0,
-                    role =  role,
-                    user = user,
-                )
-            )
+            try {
+                if(!userRepository.existsByEmail(req.email) && !userRepository.existsByContact(req.contact)){
+
+                    var user = userRepository.save(
+                        User(
+                            id = 0,
+                            username= req.username,
+                            gender = req.gender,
+                            dob = req.dob,
+                            password = passwordConfig.passwordEndCode().encode(req.password),
+                            contact = req.contact,
+                            email = req.email,
+                            address = req.address,
+                            photo = req.photo
+                        )
+                    )
+                    var user_role = userRolerepository.save(
+                        User_Role(
+                            id = 0,
+                            role =  role,
+                            user = user,
+                        )
+                    )
+                }
+            }catch (e: Exception){}
         }
         return responseObjectMap.responseOBJ(200, "Success!!")
     }
@@ -137,20 +141,25 @@ class UserServiceImpl: UserService {
         var role = roleRepository.findByIdAndStatusIsTrue(role_id)
         var userRole = userRolerepository.findByIdAndStatusIsTrue(id)
         println("username : "+user?.username)
+        println("username : "+user?.id)
         synchronized(this){
-            user?.username = t.username
-            user?.gender = t.gender
-            user?.dob = t.dob
-            user?.password = passwordConfig.passwordEndCode().encode(t.password)
-            user?.contact = t.contact
-            user?.email = t.email
-            user?.address = t.address
-            user?.photo = t.photo
-            userRepository.save(user!!)
+            try {
+//                if (!userRepository.existsByEmail(t.email) && !userRepository.existsByContact(t.contact)) {
+                    user?.username = t.username
+                    user?.gender = t.gender
+                    user?.dob = t.dob
+                    user?.password = passwordConfig.passwordEndCode().encode(t.password)
+                    user?.contact = t.contact
+                    user?.email = t.email
+                    user?.address = t.address
+                    user?.photo = t.photo
+                    userRepository.save(user!!)
 
-            userRole?.user = user
-            userRole?.role = role
-            userRolerepository.save(userRole!!)
+                    userRole?.user = user
+                    userRole?.role = role
+                    userRolerepository.save(userRole!!)
+
+            }catch (e: Exception){ }
         }
 
         return responseObjectMap.responseOBJ(200, "Success!!")

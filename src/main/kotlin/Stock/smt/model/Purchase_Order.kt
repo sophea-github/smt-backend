@@ -25,6 +25,11 @@ class Purchase_Order(
     var status:Boolean = true,
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "purchaseOrder")
-    var purchaseOrderDetail: MutableList<Purchase_Order_Detail>? = null
+    var purchaseOrderDetail: MutableList<Purchase_Order_Detail>? = null,
+
+
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "purchase_order")
+//    var purchaseReceive: MutableList<Purchase_Receive>?
 
 )

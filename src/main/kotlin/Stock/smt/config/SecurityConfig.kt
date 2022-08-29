@@ -5,19 +5,24 @@ import Stock.smt.Security.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 class SecurityConfig {
 
     @Autowired
@@ -31,23 +36,34 @@ class SecurityConfig {
     }
 
     @Bean
+    fun webSecurityCustomizer(): WebSecurityCustomizer? {
+        return WebSecurityCustomizer { web: WebSecurity ->
+            web.ignoring().antMatchers(
+                "/**",
+                "/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**",
+                "/resources/**"
+            ) }
+    }
+
+    @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain{
         http
             .csrf().disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .cors().configurationSource(corsConfigurationSource())
             .and()
             .authorizeRequests()
-//            .antMatchers(HttpMethod.GET,"/api/**").permitAll()
-            .antMatchers("/api/v1/**").permitAll()
+            .antMatchers("/api/v1/**").hasAnyAuthority("ADMIN")
             .antMatchers("/api/auth/**").permitAll()
             .anyRequest()
             .authenticated()
             .and()
-            .httpBasic()
+            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
@@ -56,4 +72,21 @@ class SecurityConfig {
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager? {
         return authenticationConfiguration.authenticationManager
     }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource? {
+        val configuration = CorsConfiguration()
+        //configuration.allowedOrigins = listOf("http://localhost:4200", "http://localhost:4300")
+        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        configuration.allowCredentials = true
+        //the below three lines will add the relevant CORS response headers
+        configuration.addAllowedOrigin("*")
+        configuration.addAllowedHeader("*")
+        configuration.addAllowedMethod("*")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+
+    }
+
 }

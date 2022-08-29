@@ -18,16 +18,12 @@ class Purchase_Order_Detail (
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="item_size")
     var itemVariantUom: ItemVariantUom? = null,
-
-    var qty: Int ,
+    var qty: Int,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="purchase_order_id")
     var purchaseOrder: Purchase_Order? = null,
-
     var price: Double?= null,
     var status: Boolean = true
-
-
 
 )

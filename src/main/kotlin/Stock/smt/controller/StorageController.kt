@@ -4,6 +4,7 @@ import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.service.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletRequest
@@ -19,14 +20,14 @@ class StorageController {
     lateinit var responseObjMap: ResponseObjectMap
 
     var resource = "./resources/images/"
-
-    @PostMapping("upload-image-/{type}")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER','PURCHASE','SALE')")
+    @PostMapping("/upload-image-/{type}")
     fun uploadFileImage(@PathVariable("type") type: String, file: MultipartFile): MutableMap<String, Any> {
         val path = type.replace('-', '/')
         return responseObjMap.ResponseObj(storageService.storeImageFile("$resource$path", file))
     }
-
-    @GetMapping("resources/images/{type}/{fileName:.+}")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER','PURCHASE','SALE')")
+    @GetMapping("/resources/images/{type}/{fileName:.+}")
     fun loadImage(
         @PathVariable fileName: String,
         @PathVariable type: String,
@@ -34,7 +35,7 @@ class StorageController {
     ): ResponseEntity<*>? {
         return storageService.loadImageFile(fileName, "$resource$type", request)
     }
-
+//    @PreAuthorize("hasAnyRole('ADMIN','USER','PURCHASE','SALE')")
     @DeleteMapping("/delete")
     fun removeFileImage(@RequestParam name:String, @RequestParam filePath:String):MutableMap<String,Any>
     {

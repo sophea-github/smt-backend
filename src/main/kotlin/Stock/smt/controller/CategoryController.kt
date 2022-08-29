@@ -3,6 +3,7 @@ package Stock.smt.controller
 import Stock.smt.model.Category
 import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.service.CategoryService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -13,7 +14,7 @@ class CategoryController constructor (
     var responseObjectMap: ResponseObjectMap
         )
 {
-    @GetMapping("list")
+    @GetMapping("/list")
     fun findAllList(@RequestParam(required = false) q: String?, page: Int, size: Int): MutableMap<String, Any> {
         val cat = categoryService.pagination(q, page, size)
         return responseObjectMap.responseOBJ(cat.totalElements, cat.content)
@@ -23,7 +24,7 @@ class CategoryController constructor (
 
     @GetMapping("/category")
     fun findAll() : MutableMap<String,Any> = responseObjectMap.ResponseObj(categoryService.findAll()!!)
-//    fun findAll(): List<Category>? = categoryService.findAll()
+
     @PostMapping("/category")
     fun saveAll(@RequestBody category: Category) : MutableMap<String,Any> = responseObjectMap.ResponseObj(categoryService.saveAll(category)!!)
     @PutMapping("/category/{id}")

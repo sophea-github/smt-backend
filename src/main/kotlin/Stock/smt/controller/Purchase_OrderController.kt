@@ -6,6 +6,7 @@ import Stock.smt.model.Purchase_Order
 import Stock.smt.repository.Purchase_Order_DetailRepository
 import Stock.smt.service.Purchase_OrderService
 import Stock.smt.service.Purchase_Order_DetailService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
