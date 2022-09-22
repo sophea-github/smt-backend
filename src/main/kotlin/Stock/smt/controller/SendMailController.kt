@@ -2,7 +2,6 @@ package Stock.smt.controller
 
 import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.service.SendMailService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.task.TaskExecutor
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -18,7 +17,7 @@ class SendMailController constructor(
 ) {
 
     @GetMapping("/mail")
-    fun sendEmailtoEmail (@RequestParam toEmail: Array<InternetAddress>, @RequestParam subject: String, @RequestParam message: String): MutableMap<String, Any> {
+    fun sendEmailToEmail (@RequestParam toEmail: Array<InternetAddress>, @RequestParam subject: String, @RequestParam message: String): MutableMap<String, Any> {
         taskExecutor.execute {
             sendMailService.sendMailToUser(toEmail, subject, message)
         }

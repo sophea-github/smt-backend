@@ -1,6 +1,5 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Category
 import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.model.SubCategory
 import Stock.smt.service.SubCategoryService
@@ -14,15 +13,15 @@ class SubCategoryController constructor(
 ) {
 
     @GetMapping("/subCategories")
-    fun findAll() : MutableMap<String,Any> = responseObjectMap.ResponseObj(subCategoryService.findAll()!!)
+    fun findAll() : MutableMap<String,Any> = responseObjectMap.responseObj(subCategoryService.findAll()!!)
     @GetMapping("subCategories/{id}")
-    fun getCategoryId(@PathVariable id: Int): MutableMap<String, Any> = responseObjectMap.ResponseObj(subCategoryService.getCategoryId(id)!!)
+    fun getCategoryId(@PathVariable id: Int): MutableMap<String, Any> = responseObjectMap.responseObj(subCategoryService.getCategoryId(id)!!)
     @PostMapping("/subCategories")
-    fun saveAll(@RequestBody subCategory: SubCategory) : MutableMap<String,Any> = responseObjectMap.ResponseObj(subCategoryService.saveAll(subCategory)!!)
+    fun saveAll(@RequestBody subCategory: SubCategory) : MutableMap<String,Any> = responseObjectMap.responseObj(subCategoryService.saveAll(subCategory)!!)
     @PutMapping("/subCategories/{id}")
-    fun updateCategory(@RequestParam id: Int, @RequestBody subCategory: SubCategory) : MutableMap<String , Any> = responseObjectMap.ResponseObj(subCategoryService.updateObj(id,subCategory)!!)
+    fun updateCategory(@PathVariable id: Int, @RequestBody subCategory: SubCategory) : MutableMap<String , Any> = responseObjectMap.responseObj(subCategoryService.updateObj(id,subCategory)!!)
     @DeleteMapping("/subCategories/{id}")
-    fun deleteCategory(@RequestParam id: Int) : MutableMap<String, Any> = responseObjectMap.ResponseObj(subCategoryService.delete(id)!!)
+    fun deleteCategory(@PathVariable id: Int) : MutableMap<String, Any> = responseObjectMap.responseObj(subCategoryService.delete(id))
     @PostMapping("/subCategories/{cid}")
-    fun createSub(@PathVariable cid: Int , @RequestBody subCategory: SubCategory): MutableMap<String,Any> = responseObjectMap.ResponseObj(subCategoryService.createSubCategories(cid,subCategory)!!)
+    fun createSub(@PathVariable cid: Int , @RequestBody subCategory: SubCategory): MutableMap<String,Any> = responseObjectMap.responseObj(subCategoryService.createSubCategories(cid,subCategory)!!)
 }

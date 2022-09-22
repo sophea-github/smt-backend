@@ -1,7 +1,6 @@
 package Stock.smt.model
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
-import org.apache.commons.collections4.MultiMapUtils
-import org.springframework.format.annotation.DateTimeFormat
 import javax.persistence.*
 import  java.util.*
 
@@ -19,7 +18,8 @@ class User (
     @Column(unique = true)
     var email: String,
     var password: String,
-    @DateTimeFormat(style = "dd/MM/yyyy")
+//    @DateTimeFormat(style = "dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     var dob: Date,
     var address: String,
     var photo: String? = null,
@@ -27,7 +27,7 @@ class User (
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
-    var userRole: MutableList<User_Role>? = null,
+    var userRole: MutableList<UserRole>? = null,
 
     @Column(name = "account_non_locked")
     var accountNonLocked: Boolean = true,

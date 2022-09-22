@@ -25,10 +25,7 @@ class StorageServiceImpl: StorageService {
         return FileUpload.removeImage(name,pathFile)
     }
 
-    override fun loadImageFile(
-        fileName: String,
-        fileProperty: String,
-        httpServletRequest: HttpServletRequest
+    override fun loadImageFile(fileName: String, fileProperty: String, httpServletRequest: HttpServletRequest
     ): ResponseEntity<*>? {
         return try {
             FileUpload.loadFileImage(fileName, fileProperty, httpServletRequest)

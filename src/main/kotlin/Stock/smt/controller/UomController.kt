@@ -13,11 +13,11 @@ class UomController constructor(
     var responseObjectMap: ResponseObjectMap
 ) {
     @GetMapping("/uom")
-    fun findAll(): MutableMap<String, Any> = responseObjectMap.ResponseObj(uomService.findAll()!!)
+    fun findAll(): MutableMap<String, Any> = responseObjectMap.responseObj(uomService.findAll()!!)
     @PostMapping("/uom")
-    fun save(@RequestBody uom: Uom): MutableMap<String,Any>  = responseObjectMap.ResponseObj(uomService.saveAll(uom)!!)
+    fun save(@RequestBody uom: Uom): MutableMap<String,Any>  = responseObjectMap.responseObj(uomService.saveAll(uom)!!)
     @PutMapping("/uom/{id}")
-    fun update(@PathVariable id: Int, @RequestBody uom: Uom): MutableMap<String,Any> = responseObjectMap.ResponseObj(uomService.updateObj(id,uom)!!)
+    fun update(@PathVariable id: Int, @RequestBody uom: Uom): MutableMap<String,Any> = responseObjectMap.responseObj(uomService.updateObj(id,uom)!!)
 //    @DeleteMapping("/uom/{id}")
 //    fun delete(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.ResponseObj(uomService.delete(id)!!)
 }

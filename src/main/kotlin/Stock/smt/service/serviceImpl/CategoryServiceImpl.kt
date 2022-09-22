@@ -35,7 +35,7 @@ class CategoryServiceImpl : CategoryService {
     override fun saveAll(t: Category): Category? = categoryRepository.save(t)
 
     override fun updateObj(id: Int, t: Category): Category? {
-        var cat= categoryRepository.findByIdAndStatusTrue(id)
+        val cat= categoryRepository.findByIdAndStatusTrue(id)
         cat?.name = t.name
         cat?.description = t.description
         return categoryRepository.save(cat!!)

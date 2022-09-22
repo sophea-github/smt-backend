@@ -18,7 +18,7 @@ class SupplierServiceImpl : SupplierService {
     override fun findAll(): List<Supplier>? = supplierRepository.findAll()
     override fun saveAll(t: Supplier): Supplier? = supplierRepository.save(t)
     override fun updateObj(id: Int, t: Supplier): Supplier? {
-        var sup = supplierRepository.findByIdAndStatusTrue(id)
+        val sup = supplierRepository.findByIdAndStatusTrue(id)
         sup?.company = t.company
         sup?.contact = t.contact
         sup?.email = t.email

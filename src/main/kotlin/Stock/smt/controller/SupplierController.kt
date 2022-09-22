@@ -14,12 +14,12 @@ class SupplierController constructor(
 ) {
 
     @GetMapping("/supplier")
-    fun findAll(): MutableMap<String,Any> = responseObjectMap.ResponseObj(supplierService.findAll()!!)
+    fun findAll(): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.findAll()!!)
     @PostMapping("/supplier")
-    fun saveAll(@RequestBody supplier: Supplier): MutableMap<String,Any> = responseObjectMap.ResponseObj(supplierService.saveAll(supplier)!!)
+    fun saveAll(@RequestBody supplier: Supplier): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.saveAll(supplier)!!)
     @PutMapping("/supplier/{id}")
-    fun updateObj(@PathVariable id: Int, @RequestBody supplier: Supplier): MutableMap<String,Any> = responseObjectMap.ResponseObj(supplierService.updateObj(id,supplier)!!)
+    fun updateObj(@PathVariable id: Int, @RequestBody supplier: Supplier): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.updateObj(id,supplier)!!)
     @DeleteMapping("/supplier/{id}")
-    fun deleteSupplier(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.ResponseObj(supplierService.delete(id)!!)
+    fun deleteSupplier(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.delete(id))
 
 }

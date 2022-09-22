@@ -18,11 +18,12 @@ class EmployeeServiceImpl: EmployeeService {
     }
 
     override fun findAll(): List<Employee>? = employeeRepository.findAll()
+    override fun findById(id: Int): Employee? = employeeRepository.findByIdAndStatusTrue(id)
 
     override fun saveAll(t: Employee): Employee? = employeeRepository.save(t)
 
     override fun updateObj(id: Int, t: Employee): Employee? {
-        var emp = employeeRepository.findByIdAndStatusTrue(id)
+        val emp = employeeRepository.findByIdAndStatusTrue(id)
         emp?.name = t.name
         emp?.gender = t.gender
         emp?.contact = t.contact
@@ -41,8 +42,8 @@ class EmployeeServiceImpl: EmployeeService {
 
     }
     override fun uploadImg(id: Int, photo: String): Employee? {
-        var emp = employeeRepository.findByIdAndStatusTrue(id) ?: throw CustomNotFoundException("Id Not Found: $id")
-        emp?.photo = photo
-        return employeeRepository.save(emp!!)
+        val emp = employeeRepository.findByIdAndStatusTrue(id) ?: throw CustomNotFoundException("Id Not Found: $id")
+        emp.photo = photo
+        return employeeRepository.save(emp)
     }
 }

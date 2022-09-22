@@ -1,0 +1,35 @@
+package Stock.smt.controller
+
+import Stock.smt.model.Custom.DTO.PurchaseOrderRequest
+import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.service.PurchaseOrderService
+import Stock.smt.service.PurchaseOrderDetailService
+import org.springframework.web.bind.annotation.*
+
+@RestController
+@RequestMapping("/api/v1")
+@CrossOrigin
+class PurchaseOrderController constructor(
+    var purchaseOrderService: PurchaseOrderService,
+    var responseObjectMap: ResponseObjectMap,
+    var purchaseOrderDetailService: PurchaseOrderDetailService
+){
+
+    @GetMapping("/po")
+    fun findAll():MutableMap<String,Any> = responseObjectMap.responseObj(purchaseOrderService.findAll()!!)
+
+    @GetMapping("/PurchaseOrder")
+    fun findAllPo():MutableMap<String,Any> = responseObjectMap.responseObj(purchaseOrderService.findAllPO()!!)
+
+    @GetMapping("/PurchaseOrderDetail/{poId}")
+    fun findAllPod(@PathVariable poId: Int): MutableMap<String,Any> = responseObjectMap.responseObj(purchaseOrderService.findPo(poId)!!)
+
+    @PostMapping("/PurchaseOrder/{cr_id}/{emp_id}/{supId}")
+    fun save(@PathVariable cr_id: Int, @PathVariable emp_id: Int, @PathVariable supId: Int, @RequestBody req: PurchaseOrderRequest): MutableMap<String, Any> = responseObjectMap.responseObj(purchaseOrderService.addPO(cr_id,emp_id,supId,req)!!)
+
+    @PutMapping("/PurchaseOrder/{emp_id}/{cr_id}/{supId}/{po_id}")
+    fun update(@PathVariable emp_id: Int, @PathVariable cr_id: Int, @PathVariable supId: Int, @PathVariable po_id: Int, @RequestBody req: PurchaseOrderRequest): MutableMap<String, Any> = responseObjectMap.responseObj(purchaseOrderService.updatePO(emp_id,cr_id,supId,po_id,req)!!)
+
+    @DeleteMapping("/PurchaseOrder/{id}")
+    fun delete(@PathVariable id: Int): MutableMap<String, Any> = responseObjectMap.responseObj(purchaseOrderService.deletePO(id)!!)
+}

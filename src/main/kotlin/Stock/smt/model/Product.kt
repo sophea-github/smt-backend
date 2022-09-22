@@ -11,7 +11,7 @@ class Product(
     var id: Int,
     @Column(nullable = false,unique = true)
     var code: String,
-    @Column(unique = true)
+//    @Column(unique = true)
     var name: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,5 +34,5 @@ class Product(
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
-    var purchaseOrderDetail: MutableList<Purchase_Order_Detail>? = null
+    var purchaseOrderDetail: MutableList<PurchaseOrderDetail>? = null
 )

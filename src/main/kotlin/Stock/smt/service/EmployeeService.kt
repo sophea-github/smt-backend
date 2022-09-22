@@ -5,4 +5,5 @@ import Stock.smt.model.Employee
 
 interface EmployeeService : BaseFun<Employee,Int> {
     fun uploadImg(id: Int,photo: String): Employee?
+    fun findById(id: Int): Employee?
 }

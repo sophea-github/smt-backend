@@ -1,8 +1,7 @@
 package Stock.smt.model
 
-import ch.qos.logback.classic.pattern.DateConverter
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
-import org.springframework.format.annotation.DateTimeFormat
 import javax.persistence.*
 import javax.validation.constraints.*
 import javax.validation.constraints.NotNull
@@ -22,7 +21,7 @@ class Employee  (
     var contact: String,
     @Email
     var email: String,
-    @DateTimeFormat(style = "dd/MM/yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     var dob: Date,
     var marital_status: String,
     var address: String,
@@ -33,6 +32,10 @@ class Employee  (
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "employee")
-    var purchaseOrder:MutableList< Purchase_Order>? =null
+    var purchaseOrder:MutableList< PurchaseOrder>? =null,
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    var purchaseReceive: MutableList<PurchaseReceive>? = null
 
 )

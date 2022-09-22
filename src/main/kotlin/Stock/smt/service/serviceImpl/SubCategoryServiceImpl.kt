@@ -30,7 +30,7 @@ class SubCategoryServiceImpl : SubCategoryService {
 
     override fun updateObj(id: Int, t: SubCategory): SubCategory? {
 //        TODO("")
-        var sub = subCategoryRepository.findByIdAndStatusTrue(id)
+        val sub = subCategoryRepository.findByIdAndStatusTrue(id)
         sub?.sub_name = t.sub_name
         sub?.category = t.category
         sub?.description = t.description
@@ -39,20 +39,18 @@ class SubCategoryServiceImpl : SubCategoryService {
 
     override fun delete(id: Int) = subCategoryRepository.deleteById(id)
 
-    override fun createSubCategories(id: Int, t: SubCategory): SubCategory? {
-        var red: SubCategory? = subCategoryService.saveAll(t)
-        var ct_id= categoryRepository.findByIdAndStatusTrue(id)
-        red?.sub_name = t.sub_name
-        red?.description =t.description
-//        red?.body =t.body
-        red?.category =ct_id
+    override fun createSubCategories(id: Int, subCategory: SubCategory): SubCategory? {
+        val red: SubCategory? = subCategoryService.saveAll(subCategory)
+        val ctId= categoryRepository.findByIdAndStatusTrue(id)
+        red?.sub_name = subCategory.sub_name
+        red?.description =subCategory.description
+        red?.category =ctId
         return subCategoryRepository.save(red!!)
     }
 
     override fun updateByCategoryId(cat_id: Int, id: Int, t: SubCategory): SubCategory? {
-        var cid= categoryRepository.findByIdAndStatusTrue(cat_id)
-        var sub = subCategoryRepository.findByIdAndStatusTrue(id)
-//            ?: throw ResourceNotFoundException("Id Not Found $id")
+        val cid= categoryRepository.findByIdAndStatusTrue(cat_id)
+        val sub = subCategoryRepository.findByIdAndStatusTrue(id)
         sub?.sub_name =t.sub_name
         sub?.description = t.description
         sub?.category = cid

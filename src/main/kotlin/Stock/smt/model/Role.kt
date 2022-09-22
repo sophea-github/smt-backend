@@ -16,6 +16,6 @@ class Role (
     var status: Boolean = true,
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "role")
-    var userRole: MutableList<User_Role>? = null
+    var userRole: MutableList<UserRole>? = null
 
 )

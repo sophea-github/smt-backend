@@ -18,7 +18,7 @@ class CustomDetailService: UserDetailsService {
     lateinit var userRepository: UserRepository
 
     override fun loadUserByUsername(username: String): UserDetails {
-        var user = userRepository.findByUsername(username)?: throw CustomNotFoundException("Username Not Found !!")
+        val user = userRepository.findByUsername(username)?: throw CustomNotFoundException("Username Not Found !!")
         return org.springframework.security.core.userdetails.User(
             user.username, user.password,user.userRole?.stream()?.map { userRole-> SimpleGrantedAuthority(userRole.role?.name.toString()) }?.collect(
                 Collectors.toList())

@@ -13,14 +13,16 @@ class EmployeeController constructor(
     var employeeService: EmployeeService
 ) {
     @GetMapping("/employee")
-    fun getAll(): MutableMap<String, Any> = responseObjectMap.ResponseObj(employeeService.findAll()!!)
+    fun getAll(): MutableMap<String, Any> = responseObjectMap.responseObj(employeeService.findAll()!!)
+    @GetMapping("/employee/{id}")
+    fun getById(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.responseObj(employeeService.findById(id)!!)
     @PostMapping("/employee")
-    fun saveAll(@RequestBody employee: Employee): MutableMap<String,Any> = responseObjectMap.ResponseObj(employeeService.saveAll(employee)!!)
+    fun saveAll(@RequestBody employee: Employee): MutableMap<String,Any> = responseObjectMap.responseObj(employeeService.saveAll(employee)!!)
     @PutMapping("/employee/{id}")
-    fun updateObj(@PathVariable id: Int, @RequestBody employee: Employee): MutableMap<String,Any> = responseObjectMap.ResponseObj(employeeService.updateObj(id,employee)!!)
+    fun updateObj(@PathVariable id: Int, @RequestBody employee: Employee): MutableMap<String,Any> = responseObjectMap.responseObj(employeeService.updateObj(id,employee)!!)
     @DeleteMapping("/employee/{id}")
-    fun deleteObj(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.ResponseObj(employeeService.delete(id)!!)
+    fun deleteObj(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.responseObj(employeeService.delete(id))
     @PostMapping("/employee/{id}")
-    fun uploadImage(@PathVariable id: Int,@RequestParam photo: String): MutableMap<String,Any> = responseObjectMap.ResponseObj(employeeService.uploadImg(id,photo)!!)
+    fun uploadImage(@PathVariable id: Int,@RequestParam photo: String): MutableMap<String,Any> = responseObjectMap.responseObj(employeeService.uploadImg(id,photo)!!)
 
 }

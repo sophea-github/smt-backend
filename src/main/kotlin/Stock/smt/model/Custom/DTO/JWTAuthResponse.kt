@@ -1,6 +1,6 @@
 package Stock.smt.model.Custom.DTO
 
 class JWTAuthResponse (
-    var accessToke: String,
+    var accessToken: String,
     var tokenType: String
 )

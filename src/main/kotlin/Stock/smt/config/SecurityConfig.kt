@@ -27,12 +27,10 @@ class SecurityConfig {
 
     @Autowired
     lateinit var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
-
     @Autowired
     lateinit var jwtAuthenticationFilter: JwtAuthenticationFilter
-
-    fun jwtAuthenticationfilter(): JwtAuthenticationFilter{
-        return jwtAuthenticationfilter()
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter{
+        return jwtAuthenticationFilter()
     }
 
     @Bean
@@ -40,13 +38,13 @@ class SecurityConfig {
         return WebSecurityCustomizer { web: WebSecurity ->
             web.ignoring().antMatchers(
                 "/**",
-                "/v2/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/webjars/**",
-                "/resources/**"
+//                "/v2/api-docs",
+//                "/configuration/ui",
+//                "/swagger-resources/**",
+//                "/configuration/security",
+//                "/swagger-ui.html",
+//                "/webjars/**",
+//                "/resources/**"
             ) }
     }
 
@@ -58,7 +56,7 @@ class SecurityConfig {
             .and()
             .authorizeRequests()
             .antMatchers("/api/v1/**").hasAnyAuthority("ADMIN")
-            .antMatchers("/api/auth/**").permitAll()
+            .antMatchers("/api/auth/**").hasAnyAuthority("ADMIN")
             .anyRequest()
             .authenticated()
             .and()

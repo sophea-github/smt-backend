@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "category")
-data class Category (
+class Category (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)

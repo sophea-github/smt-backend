@@ -4,7 +4,6 @@ import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.service.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletRequest
@@ -24,7 +23,7 @@ class StorageController {
     @PostMapping("/upload-image-/{type}")
     fun uploadFileImage(@PathVariable("type") type: String, file: MultipartFile): MutableMap<String, Any> {
         val path = type.replace('-', '/')
-        return responseObjMap.ResponseObj(storageService.storeImageFile("$resource$path", file))
+        return responseObjMap.responseObj(storageService.storeImageFile("$resource$path", file))
     }
 //    @PreAuthorize("hasAnyRole('ADMIN','USER','PURCHASE','SALE')")
     @GetMapping("/resources/images/{type}/{fileName:.+}")
@@ -39,6 +38,6 @@ class StorageController {
     @DeleteMapping("/delete")
     fun removeFileImage(@RequestParam name:String, @RequestParam filePath:String):MutableMap<String,Any>
     {
-        return responseObjMap.ResponseObj(storageService.removeFileImage(name,filePath)!!)
+        return responseObjMap.responseObj(storageService.removeFileImage(name,filePath)!!)
     }
 }

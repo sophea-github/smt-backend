@@ -6,23 +6,19 @@ import Stock.smt.model.Custom.DTO.LoginDTO
 import Stock.smt.model.Custom.DTO.UserDTO
 import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.model.User
-import Stock.smt.model.User_Role
+import Stock.smt.model.UserRole
 import Stock.smt.repository.RoleRepository
 import Stock.smt.repository.UserRepository
-import Stock.smt.repository.User_RoleRepository
+import Stock.smt.repository.UserRoleRepository
 import Stock.smt.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
 import java.util.*
 
 @Service
@@ -30,7 +26,7 @@ class UserServiceImpl: UserService {
     @Autowired
     lateinit var userRepository: UserRepository
     @Autowired
-    lateinit var userRolerepository: User_RoleRepository
+    lateinit var userRoleRepository: UserRoleRepository
     @Autowired
     lateinit var roleRepository: RoleRepository
     @Autowired
@@ -53,7 +49,7 @@ class UserServiceImpl: UserService {
     }
     override fun delete(id: Int) {
         try {
-            userRolerepository.deleteById(id)
+            userRoleRepository.deleteById(id)
             userRepository.deleteById(id)
         }catch (e: Exception){}
     }
@@ -63,7 +59,7 @@ class UserServiceImpl: UserService {
     }
 
     override fun authenticateUser(loginDto: LoginDTO): MutableMap<String,Any> {
-        var user = userRepository.getUserLoginByUsername(loginDto.username)
+        val user = userRepository.getUserLoginByUsername(loginDto.username)
         val passEncoder: PasswordEncoder = BCryptPasswordEncoder()
         if (user != null) {
             if (user.accountNonLocked) {
@@ -76,7 +72,7 @@ class UserServiceImpl: UserService {
                             )
                         )
                         SecurityContextHolder.getContext().authentication = authentication
-                        var token: String? = jwtTokenProvider.generateToken(authentication!!)
+                        val token: String? = jwtTokenProvider.generateToken(authentication!!)
                         resetFailedAttempt(loginDto.username)
                         return responseObjectMap.responseOBJ(200,token.toString())
                     }
@@ -105,12 +101,12 @@ class UserServiceImpl: UserService {
         )
     }
     override fun register(id: Int,req: UserDTO): MutableMap<String, Any>? {
-        var role = roleRepository.findByIdAndStatusIsTrue(id)
+        val role = roleRepository.findByIdAndStatusIsTrue(id)
         synchronized(this){
             try {
                 if(!userRepository.existsByEmail(req.email) && !userRepository.existsByContact(req.contact)){
 
-                    var user = userRepository.save(
+                    val user = userRepository.save(
                         User(
                             id = 0,
                             username= req.username,
@@ -123,8 +119,8 @@ class UserServiceImpl: UserService {
                             photo = req.photo
                         )
                     )
-                    var user_role = userRolerepository.save(
-                        User_Role(
+                    var user_role = userRoleRepository.save(
+                        UserRole(
                             id = 0,
                             role =  role,
                             user = user,
@@ -136,28 +132,28 @@ class UserServiceImpl: UserService {
         return responseObjectMap.responseOBJ(200, "Success!!")
     }
 
-    override fun update( role_id: Int, id: Int, t: UserDTO): MutableMap<String, Any>? {
-        var user = userRepository.findByIdAndStatusIsTrue(id)
-        var role = roleRepository.findByIdAndStatusIsTrue(role_id)
-        var userRole = userRolerepository.findByIdAndStatusIsTrue(id)
+    override fun update( role_id: Int, id: Int, userDTO: UserDTO): MutableMap<String, Any>? {
+        val user = userRepository.findByIdAndStatusIsTrue(id)
+        val role = roleRepository.findByIdAndStatusIsTrue(role_id)
+        val userRole = userRoleRepository.findByIdAndStatusIsTrue(id)
         println("username : "+user?.username)
         println("username : "+user?.id)
         synchronized(this){
             try {
 //                if (!userRepository.existsByEmail(t.email) && !userRepository.existsByContact(t.contact)) {
-                    user?.username = t.username
-                    user?.gender = t.gender
-                    user?.dob = t.dob
-                    user?.password = passwordConfig.passwordEndCode().encode(t.password)
-                    user?.contact = t.contact
-                    user?.email = t.email
-                    user?.address = t.address
-                    user?.photo = t.photo
+                    user?.username = userDTO.username
+                    user?.gender = userDTO.gender
+                    user?.dob = userDTO.dob
+                    user?.password = passwordConfig.passwordEndCode().encode(userDTO.password)
+                    user?.contact = userDTO.contact
+                    user?.email = userDTO.email
+                    user?.address = userDTO.address
+                    user?.photo = userDTO.photo
                     userRepository.save(user!!)
 
                     userRole?.user = user
                     userRole?.role = role
-                    userRolerepository.save(userRole!!)
+                userRoleRepository.save(userRole!!)
 
             }catch (e: Exception){ }
         }
@@ -167,7 +163,7 @@ class UserServiceImpl: UserService {
     }
 
     override fun uploadImg(id: Int, photo: String): User? {
-        var user = userRepository.findByIdAndStatusIsTrue(id)
+        val user = userRepository.findByIdAndStatusIsTrue(id)
         user?.photo = photo
         return userRepository.save(user!!)
     }

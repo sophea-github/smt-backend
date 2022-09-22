@@ -30,7 +30,7 @@ class ItemVariantUom(
     var product: MutableList<Product>? =null,
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "itemVariantUom")
-    var purchaseOrderDetail: MutableList<Purchase_Order_Detail>? = null
+    var purchaseOrderDetail: MutableList<PurchaseOrderDetail>? = null
 
 
 )

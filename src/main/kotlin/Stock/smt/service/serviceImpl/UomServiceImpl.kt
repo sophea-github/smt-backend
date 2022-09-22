@@ -11,12 +11,11 @@ import org.springframework.stereotype.Service
 class UomServiceImpl: UomService  {
     @Autowired
     lateinit var uomRepository: UomRepository
-    @Autowired
 
     override fun findAll(): List<Uom>? = uomRepository.findAll()
     override fun saveAll(t: Uom): Uom? = uomRepository.save(t)
     override fun updateObj(id: Int, t: Uom): Uom? {
-        var um = uomRepository.findByIdAndStatusIsTrue(id)
+        val um = uomRepository.findByIdAndStatusIsTrue(id)
         um?.name = t.name
         return uomRepository.save(um!!)
     }

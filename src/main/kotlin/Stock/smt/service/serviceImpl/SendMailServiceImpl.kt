@@ -15,8 +15,6 @@ import javax.mail.util.ByteArrayDataSource
 class SendMailServiceImpl : SendMailService {
     @Autowired
     lateinit var response: ResponseObjectMap
-    //    @Autowired
-//    lateinit var userController: UserController
     @Autowired
     lateinit var mailSender: JavaMailSender
 
@@ -27,13 +25,13 @@ class SendMailServiceImpl : SendMailService {
     private val emailAddress: String? = null
     @Throws(Exception::class)
     override fun sendMailToUser(tomail: Array<InternetAddress>, subject: String, msg: String): MutableMap<String, Any> {
-        val msger = mailSender.createMimeMessage()
-        val helper = MimeMessageHelper(msger, true)
+        val msGer = mailSender.createMimeMessage()
+        val helper = MimeMessageHelper(msGer, true)
         helper.setFrom(InternetAddress("$mailSenderName ${"<"} $emailAddress ${">"}"))
         helper.setTo(tomail)
         helper.setSubject(subject)
         helper.setText(msg, true)
-        mailSender.send(msger)
+        mailSender.send(msGer)
         return response.responseOBJ(200, "Mail was sent successfully to $tomail")
     }
 

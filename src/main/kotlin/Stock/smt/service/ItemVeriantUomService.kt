@@ -5,6 +5,6 @@ import Stock.smt.model.ItemVariantUom
 
 interface ItemVeriantUomService: BaseFun<ItemVariantUom,Int> {
 
-    fun createUom_Detail(id: Int, uomDetail: ItemVariantUom) : ItemVariantUom?
-    fun updateUom_Detail(uom_id: Int,id: Int , uomDetail: ItemVariantUom): ItemVariantUom?
+    fun createUomDetail(id: Int, uomDetail: ItemVariantUom) : ItemVariantUom?
+    fun updateUomDetail(uom_id: Int,id: Int , uomDetail: ItemVariantUom): ItemVariantUom?
 }

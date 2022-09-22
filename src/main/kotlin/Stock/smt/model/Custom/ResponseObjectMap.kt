@@ -1,8 +1,8 @@
 package Stock.smt.model.Custom
 
 class ResponseObjectMap  {
-    fun ResponseObj(obj: Any):MutableMap<String,Any>{
-        var res : MutableMap<String,Any> = HashMap()
+    fun responseObj(obj: Any):MutableMap<String,Any>{
+        val res : MutableMap<String,Any> = HashMap()
         res["response"] = Response(200,"Success")
         res["result"] = obj
         return res
@@ -16,7 +16,7 @@ class ResponseObjectMap  {
         return response
     }
     fun responeMessage(msg: String): MutableMap<String,Any>{
-        var res: MutableMap<String,Any> = HashMap()
+        val res: MutableMap<String,Any> = HashMap()
         res["Message"] =Response(0,msg)
         return res
     }

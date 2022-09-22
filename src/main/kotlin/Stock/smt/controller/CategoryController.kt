@@ -3,7 +3,6 @@ package Stock.smt.controller
 import Stock.smt.model.Category
 import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.service.CategoryService
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,16 +19,16 @@ class CategoryController constructor (
         return responseObjectMap.responseOBJ(cat.totalElements, cat.content)
     }
     @GetMapping("/category/{id}")
-    fun findById(@PathVariable id: Int):MutableMap<String,Any> = responseObjectMap.ResponseObj(categoryService.findCategoryById(id)!!)
+    fun findById(@PathVariable id: Int):MutableMap<String,Any> = responseObjectMap.responseObj(categoryService.findCategoryById(id)!!)
 
     @GetMapping("/category")
-    fun findAll() : MutableMap<String,Any> = responseObjectMap.ResponseObj(categoryService.findAll()!!)
+    fun findAll() : MutableMap<String,Any> = responseObjectMap.responseObj(categoryService.findAll()!!)
 
     @PostMapping("/category")
-    fun saveAll(@RequestBody category: Category) : MutableMap<String,Any> = responseObjectMap.ResponseObj(categoryService.saveAll(category)!!)
+    fun saveAll(@RequestBody category: Category) : MutableMap<String,Any> = responseObjectMap.responseObj(categoryService.saveAll(category)!!)
     @PutMapping("/category/{id}")
-    fun updateCategory(@PathVariable id: Int, @RequestBody category: Category) : MutableMap<String , Any> = responseObjectMap.ResponseObj(categoryService.updateObj(id,category)!!)
+    fun updateCategory(@PathVariable id: Int, @RequestBody category: Category) : MutableMap<String , Any> = responseObjectMap.responseObj(categoryService.updateObj(id,category)!!)
 
     @DeleteMapping("category/{id}")
-    fun deleteCategory(@PathVariable id: Int) : MutableMap<String, Any> = responseObjectMap.ResponseObj(categoryService.delete(id)!!)
+    fun deleteCategory(@PathVariable id: Int) : MutableMap<String, Any> = responseObjectMap.responseObj(categoryService.delete(id))
 }

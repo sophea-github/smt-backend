@@ -12,6 +12,7 @@ interface SubCategoryRepository : JpaRepository<SubCategory,Int> {
     fun findByIdAndStatusTrue(id: Int): SubCategory?
 
     @Transactional
-    @Query("select * from category where id= :cat_id",nativeQuery = true)
+    @Query("SELECT * FROM category WHERE id= :cat_id",nativeQuery = true)
+
     fun findCategoryById(cat_id: Int): MutableList<Category>?
 }
