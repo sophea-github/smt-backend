@@ -5,6 +5,7 @@ import Stock.smt.Security.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -22,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig {
 
     @Autowired
@@ -55,8 +56,9 @@ class SecurityConfig {
             .cors().configurationSource(corsConfigurationSource())
             .and()
             .authorizeRequests()
-            .antMatchers("/api/v1/**").hasAnyAuthority("ADMIN")
-            .antMatchers("/api/auth/**").hasAnyAuthority("ADMIN")
+            .antMatchers("/api/v1/**").hasAuthority("ADMIN")
+//            .antMatchers(HttpMethod.GET,"/api/v1/**").hasAuthority("USER")
+            .antMatchers("/api/auth/**").hasAuthority("ADMIN")
             .anyRequest()
             .authenticated()
             .and()
@@ -74,7 +76,7 @@ class SecurityConfig {
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource? {
         val configuration = CorsConfiguration()
-        //configuration.allowedOrigins = listOf("http://localhost:4200", "http://localhost:4300")
+        configuration.allowedOrigins = listOf("http://localhost:4200", "http://localhost:4300")
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowCredentials = true
         //the below three lines will add the relevant CORS response headers

@@ -18,7 +18,6 @@ class User (
     @Column(unique = true)
     var email: String,
     var password: String,
-//    @DateTimeFormat(style = "dd/MM/yyyy")
     @JsonFormat(pattern="yyyy-MM-dd")
     var dob: Date,
     var address: String,

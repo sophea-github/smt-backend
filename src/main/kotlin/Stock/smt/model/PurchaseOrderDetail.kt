@@ -20,7 +20,7 @@ class PurchaseOrderDetail(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="item_size")
-    var itemVariantUom: ItemVariantUom,
+    var itemVariantUom: ItemVariantUom? = null,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="purchase_order_id")
     var purchaseOrder: PurchaseOrder? = null,

@@ -1,5 +1,6 @@
 package Stock.smt.model.Custom.DTO
 
+import Stock.smt.model.UserRole
 import org.springframework.format.annotation.DateTimeFormat
 import java.util.*
 
@@ -15,4 +16,5 @@ class UserDTO(
     var dob: Date,
     var address: String,
     var photo: String?= null,
+    var userRole: UserRole? = null
 )

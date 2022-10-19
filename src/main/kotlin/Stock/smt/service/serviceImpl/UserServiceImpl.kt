@@ -132,15 +132,12 @@ class UserServiceImpl: UserService {
         return responseObjectMap.responseOBJ(200, "Success!!")
     }
 
-    override fun update( role_id: Int, id: Int, userDTO: UserDTO): MutableMap<String, Any>? {
-        val user = userRepository.findByIdAndStatusIsTrue(id)
+    override fun update( role_id: Int, user_id: Int, id: Int, userDTO: UserDTO): MutableMap<String, Any>? {
+        val user = userRepository.findByIdAndStatusIsTrue(user_id)
         val role = roleRepository.findByIdAndStatusIsTrue(role_id)
         val userRole = userRoleRepository.findByIdAndStatusIsTrue(id)
-        println("username : "+user?.username)
-        println("username : "+user?.id)
         synchronized(this){
             try {
-//                if (!userRepository.existsByEmail(t.email) && !userRepository.existsByContact(t.contact)) {
                     user?.username = userDTO.username
                     user?.gender = userDTO.gender
                     user?.dob = userDTO.dob
@@ -157,9 +154,7 @@ class UserServiceImpl: UserService {
 
             }catch (e: Exception){ }
         }
-
         return responseObjectMap.responseOBJ(200, "Success!!")
-
     }
 
     override fun uploadImg(id: Int, photo: String): User? {
@@ -195,6 +190,4 @@ class UserServiceImpl: UserService {
         }
         return false
     }
-
-
 }

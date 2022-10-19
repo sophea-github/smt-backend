@@ -1,5 +1,6 @@
 package Stock.smt.service.serviceImpl
 
+import Stock.smt.model.Custom.DTO.PorDTO
 import Stock.smt.model.Custom.DTO.PurchaseReceiveDTO
 import Stock.smt.model.Custom.DTO.PurchaseReceiveOrderRequest
 import Stock.smt.model.Custom.ResponseObjectMap
@@ -39,15 +40,18 @@ class PurchaseReceiveOrderServiceImpl: PurchaseReceiveOrderService  {
     override fun pagination(q: String?, page: Int, size: Int): Page<PurchaseReceive> {
         TODO("Not yet implemented")
     }
-    override fun findProOrderDetail(proId: Int): PurchaseOrderDetail? {
-        return purchaseReceiveOrderDetailRepository.findProductOrder(proId)
+    override fun findProOrderDetail(proId: Int, code: String): PurchaseOrderDetail? {
+        return purchaseReceiveOrderDetailRepository.findProductOrder(proId,code)
     }
     override fun findAllPor(): List<PurchaseReceiveDTO> {
         return purchaseReceiveOrderRepository.findCountPor()
     }
-    override fun addPurchaseReceive(empId: Int, crId: Int,req: PurchaseReceiveOrderRequest): MutableMap<String, Any> {
+    override fun findPorDetail(id: Int): PorDTO {
+       return purchaseReceiveOrderRepository.findPoReceive(id)
+    }
+    override fun addPurchaseReceive(empId: Int,req: PurchaseReceiveOrderRequest): MutableMap<String, Any> {
         val emp = employeeRepository.findByIdAndStatusTrue(empId)
-        val currency = changeRateRepository.findByIdAndStatusIsTrue(crId)
+//        val currency = changeRateRepository.findByIdAndStatusIsTrue(crId)
         val currentDate = LocalDateTime.now()
         val purchaseOrder = purchaseOrderRepository.findByIdAndStatusIsTrue(req.purchase_order!!.id)
         synchronized(this){
@@ -59,7 +63,7 @@ class PurchaseReceiveOrderServiceImpl: PurchaseReceiveOrderService  {
                         supplier = purchaseOrder.supplier,
                         employee = emp,
                         create_date = currentDate,
-                        changeRate = currency,
+                        changeRate = purchaseOrder.changeRate,
                         create_by = req.create_by!!,
                         receive_date = req.receive_date,
                         description = req.description!!,
@@ -70,21 +74,25 @@ class PurchaseReceiveOrderServiceImpl: PurchaseReceiveOrderService  {
                     val pro = productRepository.findByIdAndStatusIsTrue(it.product!!.id)
                     val pod = purchaseOrderDetailRepository.findPod(pro!!.id, req.purchase_order!!.id)
                     if(pod != null ){
-                            purchaseReceiveOrderDetailRepository.save(
-                                PurchaseReceiveDetail(
-                                    id = it.id,
-                                    qty = it.qty,
-                                    product = pro,
-                                    description = it.description!!,
-                                    create_date = currentDate,
-                                    purchaseReceive = por,
-                                    purchaseOrderDetail = pod
+                        purchaseReceiveOrderDetailRepository.save(
+                            PurchaseReceiveDetail(
+                                id = it.id,
+                                qty = it.qty * pro.itemVariantUom!!.conversion_factor,
+                                product = pro,
+                                description = it.description!!,
+                                create_date = currentDate,
+                                purchaseReceive = por,
+                                purchaseOrderDetail = pod
                                 )
                             )
                         pro.qty = pro.qty + it.qty
                         pro.price = pod.price!!.toFloat()
                         pro.amt = pro.qty * pro.itemVariantUom!!.conversion_factor
-                        println("uom: "+pro.itemVariantUom!!.conversion_factor)
+                        if(pro.amt>0){
+                            pro.active = "Available"
+                        }else{
+                            pro.active = "UnAvailable"
+                        }
                         productRepository.save(pro)
 
                     }else{
@@ -132,5 +140,13 @@ class PurchaseReceiveOrderServiceImpl: PurchaseReceiveOrderService  {
             }
         }
         return responseObjectMap.responseObj("Success !!")
+    }
+
+    override fun deletePor(id: Int): MutableMap<String, Any> {
+        var por =  purchaseReceiveOrderRepository.findByIdAndStatusIsTrue(id)
+        var id = por!!.id
+        purchaseReceiveOrderDetailRepository.deletePorDByPoId(id)
+        purchaseReceiveOrderRepository.deleteById(id)
+        return responseObjectMap.responseOBJ(200,"")
     }
 }

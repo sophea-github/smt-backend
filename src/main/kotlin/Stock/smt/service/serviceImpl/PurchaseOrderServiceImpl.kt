@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import kotlin.math.log
 
 
 @Service
@@ -60,37 +61,50 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
         val sup = supplierRepository.findByIdAndStatusTrue(supId)
 
         val currentDate = LocalDateTime.now()
-
-        println(currentDate)
         synchronized(this) {
-            val po = poRepository.save(
-                PurchaseOrder(
-                    id = 0,
-                    employee = emp,
-                    code = req.code!!,
-                    supplier = sup,
-                    order_date = req.order_date,
-                    create_by = req.create_by,
-                    create_date = currentDate,
-                    description = req.description,
-                    changeRate = cr,
-                )
-            )
-            req.purchaseOrderDetail!!.map {
-                val pro =  productService.findProductById(it.product!!.id)
-                purchaseOrderDetailRepository.save(
-                    PurchaseOrderDetail(
-                        id = 0,
-                        product = pro,
-                        itemVariantUom = pro?.itemVariantUom!!,
-                        qty = it.qty.toInt(),
-                        purchaseOrder = po,
-                        price = it.price,
-                        create_by =req.create_by,
-                        create_date = currentDate
-                    )
-                )
-            }
+            var a = poRepository.existsByCodeAndSupplier(req.code!!,sup!!)
+
+//            println("a:"+ a)
+//            if(!a){
+//                println("Hello null")
+//            }else{
+//                println("Hello not null !!")
+//            }
+          if(!a){
+              try {
+                  val po = poRepository.save(
+                      PurchaseOrder(
+                          id = 0,
+                          employee = emp,
+                          code = req.code!!,
+                          supplier = sup,
+                          order_date = req.order_date,
+                          create_by = req.create_by,
+                          create_date = currentDate,
+                          description = req.description,
+                          changeRate = cr,
+                      )
+                  )
+                  req.purchaseOrderDetail!!.map {
+                      val pro =  productService.findProductById(it.product!!.id)
+                      purchaseOrderDetailRepository.save(
+                          PurchaseOrderDetail(
+                              id = 0,
+                              product = pro,
+                              itemVariantUom = pro?.itemVariantUom!!,
+                              qty = it.qty.toInt() * pro?.itemVariantUom!!.conversion_factor,
+                              purchaseOrder = po,
+                              price = it.price,
+                              create_by =req.create_by,
+                              create_date = currentDate
+                          )
+                      )
+                  }
+              }catch (e: Exception){
+              }
+          }else{
+              return responseObjectMap.responseOBJ(501,"Existing !!")
+          }
         }
         return responseObjectMap.responseOBJ(200, "Success!!")
     }
@@ -117,7 +131,7 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
                 val pro = productRepository.findByIdAndStatusIsTrue(it.product!!.id)
                 pd.product = pro
                 pd.itemVariantUom = pro?.itemVariantUom!!
-                pd.qty = it.qty.toInt()
+                pd.qty = it.qty.toInt() * pro?.itemVariantUom!!.conversion_factor
                 pd.price = it.price
                 pd.purchaseOrder = purchase
                 pd.create_by = it.create_by
@@ -132,7 +146,7 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
         val pcId = po!!.id
         val pod =  purchaseOrderDetailRepository.deletePoDByPoId(pcId)
         poRepository.deleteById(pcId)
-        return responseObjectMap.responseOBJ(111,"")
+        return responseObjectMap.responseOBJ(200,"delete success !!")
     }
 
 }

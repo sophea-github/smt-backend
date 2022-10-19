@@ -14,6 +14,4 @@ interface PurchaseOrderService : BaseFun<PurchaseOrder, Int> {
     fun addPO(cr_id: Int,emp_id: Int,supId: Int,req: PurchaseOrderRequest): MutableMap<String, Any>?
     fun updatePO(emp_id: Int, currency_id: Int,supId: Int,po_id: Int, req: PurchaseOrderRequest) : MutableMap<String, Any>?
     fun deletePO(id: Int): MutableMap<String,Any>?
-
-
 }

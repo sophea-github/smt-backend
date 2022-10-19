@@ -5,6 +5,7 @@ import Stock.smt.model.Product
 import Stock.smt.repository.ProductRepository
 import Stock.smt.service.ProductService
 import Stock.smt.util.ProductExport
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,13 +20,13 @@ class ProductController constructor(
     var responseObjectMap: ResponseObjectMap,
     var productRepository: ProductRepository
 ) {
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/product")
     fun getAll(): MutableMap<String , Any> = responseObjectMap.responseObj(productService.findAll()!!)
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/product/{id}")
     fun getById(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.responseObj(productService.findProductById(id)!!)
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/product/{catId}/{itmId}")
     fun save(@PathVariable catId: Int, @PathVariable itmId: Int, @RequestBody t: Product): MutableMap<String,Any> {
         if(!productRepository.existsByCode(t.code)){
@@ -36,18 +37,18 @@ class ProductController constructor(
             return responseObjectMap.responseOBJ(400,"Check Field Again")
         }
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/product/{catId}/{itmId}/{id}")
     fun update(@PathVariable catId: Int, @PathVariable itmId: Int, @PathVariable id: Int, @RequestBody t: Product): MutableMap<String,Any> {
         return responseObjectMap.responseObj(productService.updateProduct(catId,itmId,id,t)!!)
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/product/{id}")
     fun delete(@PathVariable id: Int): MutableMap<String, Any> = responseObjectMap.responseObj(productService.delete(id))
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/product/{id}")
     fun uploadImage(@PathVariable id: Int,@RequestParam photo: String): MutableMap<String,Any> = responseObjectMap.responseObj(productService.uploadImg(id,photo)!!)
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/product/export")
     fun exportToExcel(response: HttpServletResponse) {
 //        response.contentType = "application/octet-stream";
@@ -63,7 +64,7 @@ class ProductController constructor(
         val exportToExcel = ProductExport(list)
         exportToExcel.export(response)
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/product/{id}/{qty}")
     fun updateStockProduct(@PathVariable id: Int, @PathVariable qty: Int):MutableMap<String,Any> = responseObjectMap.responseObj(productService.updateStockProduct(id, qty))
 

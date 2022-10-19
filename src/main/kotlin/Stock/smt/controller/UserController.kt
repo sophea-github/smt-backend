@@ -28,7 +28,7 @@ class UserController {
         return userService.authenticateUser(loginDto)
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER','PURCHASE','SALE')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/user")
     fun getUserRole(): MutableMap<String,Any> = responseObjectMap.responseObj(userRoleRepository.findAll())
 
@@ -45,14 +45,14 @@ class UserController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/user/{role_id}/{id}")
-    fun update(@PathVariable role_id: Int,@PathVariable id: Int,@RequestBody req: UserDTO): MutableMap<String, Any>? = responseObjectMap.responseObj(userService.update(role_id,id,req)!!)
+    @PutMapping("/user/{role_id}/{user_id}/{id}")
+    fun update(@PathVariable role_id: Int, @PathVariable user_id: Int, @PathVariable id: Int, @RequestBody req: UserDTO): MutableMap<String, Any>? = responseObjectMap.responseObj(userService.update(role_id,user_id,id,req)!!)
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/user/{id}")
     fun delete(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.responseObj(userService.delete(id))
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/user/upload/{id}")
     fun uploadImage(@PathVariable id: Int,@RequestParam photo: String): MutableMap<String,Any> = responseObjectMap.responseObj(userService.uploadImg(id,photo)!!)
 

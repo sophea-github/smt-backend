@@ -3,11 +3,13 @@ package Stock.smt.controller
 import Stock.smt.model.Custom.ResponseObjectMap
 import Stock.smt.service.SendMailService
 import org.springframework.core.task.TaskExecutor
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import javax.mail.internet.InternetAddress
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/v1")
 @CrossOrigin
 class SendMailController constructor(

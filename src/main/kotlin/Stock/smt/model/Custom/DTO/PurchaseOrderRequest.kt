@@ -3,6 +3,7 @@ package Stock.smt.model.Custom.DTO
 import Stock.smt.model.ChangeRate
 import Stock.smt.model.Employee
 import Stock.smt.model.PurchaseOrderDetail
+import Stock.smt.model.Supplier
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
@@ -10,6 +11,7 @@ import java.util.*
 
 data class PurchaseOrderRequest (
     var id: Int= 0,
+//    var supplier: Supplier? =null,
     var code: String? = null,
     var order_date: Date,
     var create_by: String? = null,
