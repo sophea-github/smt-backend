@@ -1,7 +1,7 @@
 package Stock.smt.controller
 
 import Stock.smt.model.AdjustmentType
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.AdjustmentTypeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize

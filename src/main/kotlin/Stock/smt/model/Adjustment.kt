@@ -1,6 +1,5 @@
 package Stock.smt.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.time.LocalDateTime
 import java.util.*
@@ -12,7 +11,6 @@ class Adjustment (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int,
     var code: String? = null,
-//    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSSX")
     var adjustmentDate: Date,
     @ManyToOne(fetch = FetchType.LAZY)
     var adjustmentType: AdjustmentType? = null,

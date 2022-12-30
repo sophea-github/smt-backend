@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface EmployeeRepository : JpaRepository<Employee, Int> {
-
     fun findByIdAndStatusTrue(id: Int): Employee?
 }

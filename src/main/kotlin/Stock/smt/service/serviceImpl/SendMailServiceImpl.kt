@@ -1,6 +1,6 @@
 package Stock.smt.service.serviceImpl
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.SendMailService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +12,8 @@ import javax.mail.internet.InternetAddress
 import javax.mail.util.ByteArrayDataSource
 
 @Service
-class SendMailServiceImpl : SendMailService {
+class SendMailServiceImpl: SendMailService {
+
     @Autowired
     lateinit var response: ResponseObjectMap
     @Autowired
@@ -20,7 +21,6 @@ class SendMailServiceImpl : SendMailService {
 
     @Value( "Stock Company")
     private val mailSenderName: String? = null
-
     @Value("\${spring.mail.username}")
     private val emailAddress: String? = null
     @Throws(Exception::class)
@@ -34,7 +34,6 @@ class SendMailServiceImpl : SendMailService {
         mailSender.send(msGer)
         return response.responseOBJ(200, "Mail was sent successfully to $tomail")
     }
-
     override fun sendEmailWithAttachment(
         toEmail: Array<InternetAddress>,
         subject: String,

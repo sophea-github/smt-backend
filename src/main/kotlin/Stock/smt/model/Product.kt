@@ -37,6 +37,8 @@ class Product(
     var purchaseOrderDetail: MutableList<PurchaseOrderDetail>? = null,
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
-    var adjustmentDetail: MutableList<AdjustmentDetail>? = null
-
+    var adjustmentDetail: MutableList<AdjustmentDetail>? = null,
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "product")
+    var saleDetail: MutableList<SaleDetail>? = null
 )

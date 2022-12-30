@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UomRepository: JpaRepository<Uom,Int> {
-
     fun findByIdAndStatusIsTrue(id: Int): Uom?
 }

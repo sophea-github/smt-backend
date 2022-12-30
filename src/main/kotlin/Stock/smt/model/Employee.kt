@@ -40,6 +40,9 @@ class Employee  (
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    var adjustmentDetail: MutableList<AdjustmentDetail>? = null
+    var adjustmentDetail: MutableList<AdjustmentDetail>? = null,
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    var sale: MutableList<Sale>? = null
 
 )

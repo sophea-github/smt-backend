@@ -1,7 +1,7 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.DTO.PurchaseReceiveOrderRequest
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.dto.PurchaseReceiveOrderRequest
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.PurchaseReceiveOrderService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*

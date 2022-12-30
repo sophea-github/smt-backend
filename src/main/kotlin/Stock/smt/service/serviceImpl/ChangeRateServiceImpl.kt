@@ -3,13 +3,14 @@ package Stock.smt.service.serviceImpl
 import Stock.smt.model.ChangeRate
 import Stock.smt.repository.ChangeRateRepository
 import Stock.smt.service.ChangeRateService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 
 @Service
-class ChangeRateServiceImpl constructor(
-    var changeRateRepository: ChangeRateRepository
-) : ChangeRateService {
+class ChangeRateServiceImpl: ChangeRateService {
+    @Autowired
+    lateinit var changeRateRepository: ChangeRateRepository
     override fun findAll(): List<ChangeRate>?= changeRateRepository.findAll()
     override fun saveAll(t: ChangeRate): ChangeRate? = changeRateRepository.save(t)
     override fun updateObj(id: Int, t: ChangeRate): ChangeRate? {
@@ -25,7 +26,6 @@ class ChangeRateServiceImpl constructor(
             changeRateRepository.deleteById(id)
         }catch(e: Exception){}
     }
-
     override fun pagination(q: String?, page: Int, size: Int): Page<ChangeRate> {
         TODO("Not yet implemented")
     }

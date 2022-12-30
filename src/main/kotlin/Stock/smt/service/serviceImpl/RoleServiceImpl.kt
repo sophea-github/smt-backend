@@ -13,19 +13,15 @@ class RoleServiceImpl: RoleService {
     lateinit var roleRepository: RoleRepository
 
     override fun findAll(): List<Role>? = roleRepository.findAll()
-
     override fun delete(id: Int) {
         TODO("Not yet implemented")
     }
-
     override fun saveAll(t: Role): Role? {
         TODO("Not yet implemented")
     }
-
     override fun updateObj(id: Int, t: Role): Role? {
         TODO("Not yet implemented")
     }
-
     override fun pagination(q: String?, page: Int, size: Int): Page<Role> {
         TODO("Not yet implemented")
     }

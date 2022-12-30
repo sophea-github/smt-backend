@@ -1,11 +1,10 @@
 package Stock.smt.service
 
 import Stock.smt.base.BaseFun
-import Stock.smt.model.Custom.DTO.PurchaseOrderDTO
-import Stock.smt.model.Custom.DTO.PurchaseOrderRequest
-import Stock.smt.model.Custom.DTO.PoDTO
+import Stock.smt.model.custom.dto.PurchaseOrderDTO
+import Stock.smt.model.custom.dto.PurchaseOrderRequest
+import Stock.smt.model.custom.dto.PoDTO
 import Stock.smt.model.PurchaseOrder
-import org.springframework.data.jpa.repository.Query
 
 interface PurchaseOrderService : BaseFun<PurchaseOrder, Int> {
     //select count join

@@ -1,8 +1,8 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.DTO.LoginDTO
-import Stock.smt.model.Custom.DTO.UserDTO
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.dto.LoginDTO
+import Stock.smt.model.custom.dto.UserDTO
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.repository.UserRepository
 import Stock.smt.repository.UserRoleRepository
 import Stock.smt.service.UserService

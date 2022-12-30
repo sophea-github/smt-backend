@@ -1,6 +1,6 @@
 package Stock.smt.service.serviceImpl
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.Product
 import Stock.smt.repository.CategoryRepository
 import Stock.smt.repository.ItemVeriantUomRepository
@@ -29,6 +29,7 @@ class ProductServiceImpl : ProductService {
         TODO("Not yet implemented")
     }
     override fun delete(id: Int) {
+
         try {
             productRepository.deleteById(id)
         }catch (e: Exception){}

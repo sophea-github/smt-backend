@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.StorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

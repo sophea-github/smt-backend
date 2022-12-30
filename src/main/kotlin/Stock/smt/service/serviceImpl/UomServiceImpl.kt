@@ -8,7 +8,8 @@ import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 
 @Service
-class UomServiceImpl: UomService  {
+class UomServiceImpl: UomService {
+
     @Autowired
     lateinit var uomRepository: UomRepository
 
@@ -19,7 +20,6 @@ class UomServiceImpl: UomService  {
         um?.name = t.name
         return uomRepository.save(um!!)
     }
-
     override fun delete(id: Int) {
         try {
             uomRepository.deleteById(id)

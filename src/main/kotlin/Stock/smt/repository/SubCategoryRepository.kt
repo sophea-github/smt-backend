@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface SubCategoryRepository : JpaRepository<SubCategory,Int> {
     fun findByIdAndStatusTrue(id: Int): SubCategory?
-
     @Transactional
     @Query("SELECT * FROM category WHERE id= :cat_id",nativeQuery = true)
-
     fun findCategoryById(cat_id: Int): MutableList<Category>?
 }

@@ -1,7 +1,7 @@
 package Stock.smt.controller
 
 import Stock.smt.model.ChangeRate
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.ChangeRateService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*

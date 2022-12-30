@@ -1,7 +1,7 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.DTO.AdjustmentRequest
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.dto.AdjustmentRequest
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.AdjustmentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
@@ -39,5 +39,4 @@ class AdjustmentController {
     fun delete(@PathVariable adId: Int): MutableMap<String,Any>{
         return responseObjectMap.responseObj(adjustmentService.deleteAdjustment(adId)!!)
     }
-
 }

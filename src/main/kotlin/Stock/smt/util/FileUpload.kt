@@ -1,9 +1,9 @@
 package Stock.smt.util
 
-import Stock.smt.Response.FileUploadResponse
-import Stock.smt.model.Custom.Exception.CustomBadRequestException
-import Stock.smt.model.Custom.Exception.CustomNotAcceptableException
-import Stock.smt.model.Custom.Exception.CustomNotFoundException
+import Stock.smt.response.FileUploadResponse
+import Stock.smt.model.custom.exception.CustomBadRequestException
+import Stock.smt.model.custom.exception.CustomNotAcceptableException
+import Stock.smt.model.custom.exception.CustomNotFoundException
 import org.springframework.core.io.Resource
 import org.springframework.core.io.UrlResource
 import org.springframework.http.MediaType

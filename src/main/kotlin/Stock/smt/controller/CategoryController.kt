@@ -1,7 +1,7 @@
 package Stock.smt.controller
 
 import Stock.smt.model.Category
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.CategoryService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*

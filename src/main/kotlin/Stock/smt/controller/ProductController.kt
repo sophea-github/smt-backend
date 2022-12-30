@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.Product
 import Stock.smt.repository.ProductRepository
 import Stock.smt.service.ProductService

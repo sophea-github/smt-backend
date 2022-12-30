@@ -8,7 +8,8 @@ import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 
 @Service
-class SupplierServiceImpl : SupplierService {
+class SupplierServiceImpl: SupplierService {
+
     @Autowired
     lateinit var supplierRepository: SupplierRepository
 

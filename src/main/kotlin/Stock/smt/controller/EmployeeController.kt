@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.Employee
 import Stock.smt.service.EmployeeService
 import org.springframework.security.access.prepost.PreAuthorize
@@ -31,5 +31,4 @@ class EmployeeController constructor(
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/employee/{id}")
     fun uploadImage(@PathVariable id: Int,@RequestParam photo: String): MutableMap<String,Any> = responseObjectMap.responseObj(employeeService.uploadImg(id,photo)!!)
-
 }

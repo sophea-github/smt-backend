@@ -1,6 +1,6 @@
 package Stock.smt.service.serviceImpl
 
-import Stock.smt.model.Custom.Exception.CustomNotFoundException
+import Stock.smt.model.custom.exception.CustomNotFoundException
 import Stock.smt.model.Employee
 import Stock.smt.repository.EmployeeRepository
 import Stock.smt.service.EmployeeService
@@ -12,16 +12,12 @@ import org.springframework.stereotype.Service
 class EmployeeServiceImpl: EmployeeService {
     @Autowired
     lateinit var employeeRepository: EmployeeRepository
-
     override fun pagination(q: String?, page: Int, size: Int): Page<Employee> {
         TODO("Not yet implemented")
     }
-
     override fun findAll(): List<Employee>? = employeeRepository.findAll()
     override fun findById(id: Int): Employee? = employeeRepository.findByIdAndStatusTrue(id)
-
     override fun saveAll(t: Employee): Employee? = employeeRepository.save(t)
-
     override fun updateObj(id: Int, t: Employee): Employee? {
         val emp = employeeRepository.findByIdAndStatusTrue(id)
         emp?.name = t.name

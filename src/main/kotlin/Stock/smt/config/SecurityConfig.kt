@@ -1,11 +1,10 @@
 package Stock.smt.config
 
-import Stock.smt.Security.JwtAuthenticationEntryPoint
-import Stock.smt.Security.JwtAuthenticationFilter
+import Stock.smt.security.JwtAuthenticationEntryPoint
+import Stock.smt.security.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -19,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-
 
 @Configuration
 @EnableWebSecurity
@@ -56,9 +54,10 @@ class SecurityConfig {
             .cors().configurationSource(corsConfigurationSource())
             .and()
             .authorizeRequests()
-            .antMatchers("/api/v1/**").hasAuthority("ADMIN")
+//            .antMatchers("/api/v1/**").hasAuthority("ADMIN")
+            .antMatchers("/api/v1/**").permitAll()
 //            .antMatchers(HttpMethod.GET,"/api/v1/**").hasAuthority("USER")
-            .antMatchers("/api/auth/**").hasAuthority("ADMIN")
+//            .antMatchers("/api/auth/**").hasAuthority("ADMIN")
             .anyRequest()
             .authenticated()
             .and()

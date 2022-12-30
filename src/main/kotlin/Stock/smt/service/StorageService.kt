@@ -1,6 +1,6 @@
 package Stock.smt.service
 
-import Stock.smt.Response.FileUploadResponse
+import Stock.smt.response.FileUploadResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.multipart.MultipartFile
 import javax.servlet.http.HttpServletRequest

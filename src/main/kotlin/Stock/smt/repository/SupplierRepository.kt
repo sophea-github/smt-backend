@@ -6,7 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface SupplierRepository : JpaRepository<Supplier, Int> {
-
     fun findByIdAndStatusTrue(id: Int): Supplier?
-
 }

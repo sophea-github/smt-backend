@@ -8,5 +8,4 @@ interface BaseFun<T,D> {
     fun saveAll(t: T): T?
     fun updateObj(id: Int, t: T): T?
     fun delete(id: Int)
-
 }

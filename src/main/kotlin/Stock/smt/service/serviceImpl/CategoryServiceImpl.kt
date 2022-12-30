@@ -11,11 +11,9 @@ import java.util.*
 import javax.persistence.criteria.Predicate
 
 @Service
-class CategoryServiceImpl : CategoryService {
-
+class CategoryServiceImpl: CategoryService {
     @Autowired
     lateinit var categoryRepository: CategoryRepository
-
     override fun pagination(q: String?, page: Int, size: Int): Page<Category> {
         return categoryRepository.findAll(
             {root, query, cd ->
@@ -29,11 +27,8 @@ class CategoryServiceImpl : CategoryService {
             },
             PageRequest.of(page, size))
     }
-
     override fun findAll(): List<Category>? = categoryRepository.findAll()
-
     override fun saveAll(t: Category): Category? = categoryRepository.save(t)
-
     override fun updateObj(id: Int, t: Category): Category? {
         val cat= categoryRepository.findByIdAndStatusTrue(id)
         cat?.name = t.name
@@ -47,7 +42,6 @@ class CategoryServiceImpl : CategoryService {
 
         }
     }
-
     override fun findCategoryById(id: Int): Category? {
         return categoryRepository.findByIdAndStatusTrue(id)
     }

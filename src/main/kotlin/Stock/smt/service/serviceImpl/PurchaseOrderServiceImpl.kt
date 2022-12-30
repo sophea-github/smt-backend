@@ -1,8 +1,8 @@
 package Stock.smt.service.serviceImpl
-import Stock.smt.model.Custom.DTO.PurchaseOrderDTO
-import Stock.smt.model.Custom.DTO.PurchaseOrderRequest
-import Stock.smt.model.Custom.DTO.PoDTO
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.dto.PurchaseOrderDTO
+import Stock.smt.model.custom.dto.PurchaseOrderRequest
+import Stock.smt.model.custom.dto.PoDTO
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.PurchaseOrder
 import Stock.smt.model.PurchaseOrderDetail
 import Stock.smt.repository.*
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import kotlin.math.log
-
 
 @Service
 class PurchaseOrderServiceImpl: PurchaseOrderService {
@@ -31,8 +29,8 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
     lateinit var productService: ProductService
     @Autowired
     lateinit var productRepository: ProductRepository
-    @Autowired lateinit var supplierRepository: SupplierRepository
-
+    @Autowired
+    lateinit var supplierRepository: SupplierRepository
 
     override fun findPo(id: Int): PoDTO? {
         return poRepository.findPurchase(id)
@@ -62,14 +60,7 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
 
         val currentDate = LocalDateTime.now()
         synchronized(this) {
-            var a = poRepository.existsByCodeAndSupplier(req.code!!,sup!!)
-
-//            println("a:"+ a)
-//            if(!a){
-//                println("Hello null")
-//            }else{
-//                println("Hello not null !!")
-//            }
+            val a = poRepository.existsByCodeAndSupplier(req.code!!,sup!!)
           if(!a){
               try {
                   val po = poRepository.save(
@@ -92,7 +83,7 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
                               id = 0,
                               product = pro,
                               itemVariantUom = pro?.itemVariantUom!!,
-                              qty = it.qty.toInt() * pro?.itemVariantUom!!.conversion_factor,
+                              qty = it.qty.toInt() * pro.itemVariantUom!!.conversion_factor,
                               purchaseOrder = po,
                               price = it.price,
                               create_by =req.create_by,
@@ -131,7 +122,7 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
                 val pro = productRepository.findByIdAndStatusIsTrue(it.product!!.id)
                 pd.product = pro
                 pd.itemVariantUom = pro?.itemVariantUom!!
-                pd.qty = it.qty.toInt() * pro?.itemVariantUom!!.conversion_factor
+                pd.qty = it.qty.toInt() * pro.itemVariantUom!!.conversion_factor
                 pd.price = it.price
                 pd.purchaseOrder = purchase
                 pd.create_by = it.create_by
@@ -144,9 +135,8 @@ class PurchaseOrderServiceImpl: PurchaseOrderService {
     override fun deletePO(id: Int): MutableMap<String, Any>? {
         val po = poRepository.findByIdAndStatusIsTrue(id)
         val pcId = po!!.id
-        val pod =  purchaseOrderDetailRepository.deletePoDByPoId(pcId)
+        purchaseOrderDetailRepository.deletePoDByPoId(pcId)
         poRepository.deleteById(pcId)
         return responseObjectMap.responseOBJ(200,"delete success !!")
     }
-
 }

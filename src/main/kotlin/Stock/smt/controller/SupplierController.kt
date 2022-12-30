@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.Supplier
 import Stock.smt.service.SupplierService
 import org.springframework.security.access.prepost.PreAuthorize

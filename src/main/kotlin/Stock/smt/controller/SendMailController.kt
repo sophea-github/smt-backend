@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.service.SendMailService
 import org.springframework.core.task.TaskExecutor
 import org.springframework.security.access.prepost.PreAuthorize

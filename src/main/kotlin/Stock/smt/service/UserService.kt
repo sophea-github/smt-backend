@@ -1,8 +1,8 @@
 package Stock.smt.service
 
 import Stock.smt.base.BaseFun
-import Stock.smt.model.Custom.DTO.LoginDTO
-import Stock.smt.model.Custom.DTO.UserDTO
+import Stock.smt.model.custom.dto.LoginDTO
+import Stock.smt.model.custom.dto.UserDTO
 import Stock.smt.model.User
 
 interface UserService: BaseFun<User,Int> {

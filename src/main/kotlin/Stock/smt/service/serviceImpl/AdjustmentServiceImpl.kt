@@ -2,10 +2,10 @@ package Stock.smt.service.serviceImpl
 
 import Stock.smt.model.Adjustment
 import Stock.smt.model.AdjustmentDetail
-import Stock.smt.model.Custom.DTO.AdDTO
-import Stock.smt.model.Custom.DTO.AdjustmentDTO
-import Stock.smt.model.Custom.DTO.AdjustmentRequest
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.dto.AdDTO
+import Stock.smt.model.custom.dto.AdjustmentDTO
+import Stock.smt.model.custom.dto.AdjustmentRequest
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.repository.*
 import Stock.smt.service.AdjustmentService
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,13 +17,21 @@ import java.util.*
 
 @Service
 class AdjustmentServiceImpl: AdjustmentService {
-    @Autowired lateinit var adjustmentTypeRepository: AdjustmentTypeRepository
-    @Autowired lateinit var adjustmentRepository: AdjustmentRepository
-    @Autowired lateinit var adjustmentDetailRepository: AdjustmentDetailRepository
-    @Autowired lateinit var responseObjectMap: ResponseObjectMap
-    @Autowired lateinit var productRepository: ProductRepository
-    @Autowired lateinit var employeeRepository: EmployeeRepository
-    @Autowired lateinit var documentarySettingRepository: DocumentarySettingRepository
+    @Autowired
+    lateinit var adjustmentTypeRepository: AdjustmentTypeRepository
+    @Autowired
+    lateinit var adjustmentRepository: AdjustmentRepository
+    @Autowired
+    lateinit var adjustmentDetailRepository: AdjustmentDetailRepository
+    @Autowired
+    lateinit var responseObjectMap: ResponseObjectMap
+    @Autowired
+    lateinit var productRepository: ProductRepository
+    @Autowired
+    lateinit var employeeRepository: EmployeeRepository
+    @Autowired
+    lateinit var documentarySettingRepository: DocumentarySettingRepository
+
     override fun findAll(): List<Adjustment>? {
         return adjustmentRepository.findAll()
     }

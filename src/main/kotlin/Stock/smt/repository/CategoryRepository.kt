@@ -8,8 +8,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CategoryRepository : JpaRepository<Category,Int>,JpaSpecificationExecutor<Category> {
-
     fun findByIdAndStatusTrue(id: Int) : Category?
-
-
 }

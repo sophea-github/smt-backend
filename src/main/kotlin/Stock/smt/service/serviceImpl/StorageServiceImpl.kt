@@ -1,6 +1,6 @@
 package Stock.smt.service.serviceImpl
 
-import Stock.smt.Response.FileUploadResponse
+import Stock.smt.response.FileUploadResponse
 import Stock.smt.service.StorageService
 import Stock.smt.util.FileUpload
 import org.springframework.http.ResponseEntity
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest
 
 @Service
 class StorageServiceImpl: StorageService {
-
     override fun storeImageFile(filePath: String, file: MultipartFile): FileUploadResponse {
         val fileUpload = FileUpload.storeImage(file,filePath)
         return FileUploadResponse(
@@ -20,11 +19,9 @@ class StorageServiceImpl: StorageService {
             fileSize = fileUpload?.fileSize
         )
     }
-
     override fun removeFileImage(name: String, pathFile: String): Boolean? {
         return FileUpload.removeImage(name,pathFile)
     }
-
     override fun loadImageFile(fileName: String, fileProperty: String, httpServletRequest: HttpServletRequest
     ): ResponseEntity<*>? {
         return try {
@@ -33,5 +30,4 @@ class StorageServiceImpl: StorageService {
             null
         }
     }
-
 }

@@ -1,10 +1,10 @@
 package Stock.smt.service.serviceImpl
 
-import Stock.smt.Security.JwtTokenProvider
+import Stock.smt.security.JwtTokenProvider
 import Stock.smt.config.PasswordConfig
-import Stock.smt.model.Custom.DTO.LoginDTO
-import Stock.smt.model.Custom.DTO.UserDTO
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.dto.LoginDTO
+import Stock.smt.model.custom.dto.UserDTO
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.User
 import Stock.smt.model.UserRole
 import Stock.smt.repository.RoleRepository
@@ -38,10 +38,8 @@ class UserServiceImpl: UserService {
     @Autowired
     lateinit var jwtTokenProvider: JwtTokenProvider
 
-    val MAX_FAILED_ATTEMPTS: Int = 3
+    val MAX_FALED_ATTEMPTS: Int = 3
     val LOCK_TIME_DURATION : Int = (3 * 60 * 1000) //3 minute
-
-
     override fun findAll(): List<User>? = userRepository.findAll()
     override fun saveAll(t: User): User? = userRepository.save(t)
     override fun updateObj(id: Int, t: User): User? {
@@ -53,17 +51,15 @@ class UserServiceImpl: UserService {
             userRepository.deleteById(id)
         }catch (e: Exception){}
     }
-
     override fun pagination(q: String?, page: Int, size: Int): Page<User> {
         TODO("Not yet implemented")
     }
-
     override fun authenticateUser(loginDto: LoginDTO): MutableMap<String,Any> {
         val user = userRepository.getUserLoginByUsername(loginDto.username)
         val passEncoder: PasswordEncoder = BCryptPasswordEncoder()
         if (user != null) {
             if (user.accountNonLocked) {
-                if (user.failedAttempt!! < MAX_FAILED_ATTEMPTS - 1) {
+                if (user.failedAttempt!! < MAX_FALED_ATTEMPTS - 1) {
                     if (passEncoder.matches(loginDto.password, user.password) && user.username == loginDto.username) {
                         val authentication = authenticationManager.authenticate(
                             UsernamePasswordAuthenticationToken(
@@ -105,7 +101,6 @@ class UserServiceImpl: UserService {
         synchronized(this){
             try {
                 if(!userRepository.existsByEmail(req.email) && !userRepository.existsByContact(req.contact)){
-
                     val user = userRepository.save(
                         User(
                             id = 0,
@@ -119,7 +114,7 @@ class UserServiceImpl: UserService {
                             photo = req.photo
                         )
                     )
-                    var user_role = userRoleRepository.save(
+                    userRoleRepository.save(
                         UserRole(
                             id = 0,
                             role =  role,
@@ -131,23 +126,21 @@ class UserServiceImpl: UserService {
         }
         return responseObjectMap.responseOBJ(200, "Success!!")
     }
-
-    override fun update( role_id: Int, user_id: Int, id: Int, userDTO: UserDTO): MutableMap<String, Any>? {
+    override fun update(role_id: Int, user_id: Int, id: Int, req: UserDTO): MutableMap<String, Any>? {
         val user = userRepository.findByIdAndStatusIsTrue(user_id)
         val role = roleRepository.findByIdAndStatusIsTrue(role_id)
         val userRole = userRoleRepository.findByIdAndStatusIsTrue(id)
         synchronized(this){
             try {
-                    user?.username = userDTO.username
-                    user?.gender = userDTO.gender
-                    user?.dob = userDTO.dob
-                    user?.password = passwordConfig.passwordEndCode().encode(userDTO.password)
-                    user?.contact = userDTO.contact
-                    user?.email = userDTO.email
-                    user?.address = userDTO.address
-                    user?.photo = userDTO.photo
+                    user?.username = req.username
+                    user?.gender = req.gender
+                    user?.dob = req.dob
+                    user?.password = passwordConfig.passwordEndCode().encode(req.password)
+                    user?.contact = req.contact
+                    user?.email = req.email
+                    user?.address = req.address
+                    user?.photo = req.photo
                     userRepository.save(user!!)
-
                     userRole?.user = user
                     userRole?.role = role
                 userRoleRepository.save(userRole!!)
@@ -156,28 +149,23 @@ class UserServiceImpl: UserService {
         }
         return responseObjectMap.responseOBJ(200, "Success!!")
     }
-
     override fun uploadImg(id: Int, photo: String): User? {
         val user = userRepository.findByIdAndStatusIsTrue(id)
         user?.photo = photo
         return userRepository.save(user!!)
     }
-
     override fun increaseFailedAttempt(user: User) {
         val newFailedAttempts: Int = user.failedAttempt!! + 1
         userRepository.updateFailedAttempt(newFailedAttempts, user.username)
     }
-
     override fun resetFailedAttempt(username: String?) {
         userRepository.updateFailedAttempt(0, username)
     }
-
     override fun lock(user: User) {
         user.accountNonLocked= false
         user.lockTime = Date()
         userRepository.save(user)
     }
-
     override fun unlockUser(user: User): Boolean {
         val lockTimeInMillis: Long = user.lockTime!!.time
         val currentTimeInMillis = System.currentTimeMillis()
@@ -190,4 +178,5 @@ class UserServiceImpl: UserService {
         }
         return false
     }
+
 }

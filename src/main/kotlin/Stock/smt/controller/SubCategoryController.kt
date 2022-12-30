@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.SubCategory
 import Stock.smt.service.SubCategoryService
 import org.springframework.web.bind.annotation.*

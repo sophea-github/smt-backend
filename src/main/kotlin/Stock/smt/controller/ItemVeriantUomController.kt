@@ -1,6 +1,6 @@
 package Stock.smt.controller
 
-import Stock.smt.model.Custom.ResponseObjectMap
+import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.ItemVariantUom
 import Stock.smt.service.ItemVeriantUomService
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/api/v1")
 @CrossOrigin
-class ItemVariantUomController {
-    @Autowired
-    lateinit var uomDetailService: ItemVeriantUomService
-    @Autowired
-    lateinit var responseObjectMap: ResponseObjectMap
+class ItemVariantUomController constructor(
+    private val uomDetailService: ItemVeriantUomService,
+    private val responseObjectMap: ResponseObjectMap
+) {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/uom_detail")
     fun findAll(): MutableMap<String,Any> = responseObjectMap.responseObj(uomDetailService.findAll()!!)
