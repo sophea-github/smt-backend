@@ -12,19 +12,25 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin
 class SupplierController constructor(
     var supplierService: SupplierService,
-    var responseObjectMap: ResponseObjectMap
+    var responseObjectMap: ResponseObjectMap,
 ) {
     @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @GetMapping("/supplier")
-    fun findAll(): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.findAll()!!)
+    fun findAll(): MutableMap<String, Any> = responseObjectMap.responseObj(supplierService.findAll()!!)
+
     @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @PostMapping("/supplier")
-    fun saveAll(@RequestBody supplier: Supplier): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.saveAll(supplier)!!)
+    fun saveAll(@RequestBody supplier: Supplier): MutableMap<String, Any> =
+        responseObjectMap.responseObj(supplierService.saveAll(supplier)!!)
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/supplier/{id}")
-    fun updateObj(@PathVariable id: Int, @RequestBody supplier: Supplier): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.updateObj(id,supplier)!!)
+    fun updateObj(@PathVariable id: Int, @RequestBody supplier: Supplier): MutableMap<String, Any> =
+        responseObjectMap.responseObj(supplierService.updateObj(id, supplier)!!)
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/supplier/{id}")
-    fun deleteSupplier(@PathVariable id: Int): MutableMap<String,Any> = responseObjectMap.responseObj(supplierService.delete(id))
+    fun deleteSupplier(@PathVariable id: Int): MutableMap<String, Any> =
+        responseObjectMap.responseObj(supplierService.delete(id))
 
 }

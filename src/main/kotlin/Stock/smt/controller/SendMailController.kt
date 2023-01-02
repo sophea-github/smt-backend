@@ -15,22 +15,33 @@ import javax.mail.internet.InternetAddress
 class SendMailController constructor(
     private val response: ResponseObjectMap,
     private val sendMailService: SendMailService,
-    private val taskExecutor: TaskExecutor
+    private val taskExecutor: TaskExecutor,
 ) {
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/mail")
-    fun sendEmailToEmail (@RequestParam toEmail: Array<InternetAddress>, @RequestParam subject: String, @RequestParam message: String): MutableMap<String, Any> {
+    fun sendEmailToEmail(
+        @RequestParam toEmail: Array<InternetAddress>,
+        @RequestParam subject: String,
+        @RequestParam message: String,
+    ): MutableMap<String, Any> {
         taskExecutor.execute {
             sendMailService.sendMailToUser(toEmail, subject, message)
         }
         return response.responseOBJ(200, "Success")
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/file")
-    fun sendEmailWithAttachment(@RequestParam toEmail: Array<InternetAddress>, subject: String, message: String, file: MultipartFile?): MutableMap<String, Any> {
+    fun sendEmailWithAttachment(
+        @RequestParam toEmail: Array<InternetAddress>,
+        subject: String,
+        message: String,
+        file: MultipartFile?,
+    ): MutableMap<String, Any> {
 //      try {
-          taskExecutor.execute {
-              sendMailService.sendEmailWithAttachment(toEmail, subject, message, file)
-          }
+        taskExecutor.execute {
+            sendMailService.sendEmailWithAttachment(toEmail, subject, message, file)
+        }
 //      }catch (e:Exception){}
         return response.responseOBJ(200, "Success!!")
     }

@@ -127,9 +127,7 @@ class PurchaseOrderServiceImpl : PurchaseOrderService {
         val sup = supplierRepository.findByIdAndStatusTrue(supId)
         val currentDate = LocalDateTime.now()
         synchronized(this) {
-
             val check = poRepository.findByCodeAndSupplier(req.code!!, sup!!)
-
             if (po?.id == check?.id || check?.id == null) {
                 try {
                     po?.employee = emp
@@ -141,7 +139,6 @@ class PurchaseOrderServiceImpl : PurchaseOrderService {
                     po?.changeRate = cr
                     po?.create_date = currentDate
                     val purchase = poRepository.save(po!!)
-
                     val oldPo = req.purchaseOrderDetail?.filter { it.poid != null }
                     oldPo!!.map {
                         val pd = purchaseOrderDetailRepository.findByIdAndStatusIsTrue(it.poid!!)

@@ -13,7 +13,7 @@ class EmployeeController constructor(
     var responseObjectMap: ResponseObjectMap,
     var employeeService: EmployeeService
 ) {
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/employee")
     fun getAll(): MutableMap<String, Any> = responseObjectMap.responseObj(employeeService.findAll()!!)
     @PreAuthorize("hasRole('ADMIN')")

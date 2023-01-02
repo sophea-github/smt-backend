@@ -15,7 +15,7 @@ class PurchaseOrderController constructor(
     var responseObjectMap: ResponseObjectMap,
     var purchaseOrderDetailService: PurchaseOrderDetailService
 ){
-    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE','USER')")
     @GetMapping("/po")
     fun findAll():MutableMap<String,Any> = responseObjectMap.responseObj(purchaseOrderService.findAll()!!)
     @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")

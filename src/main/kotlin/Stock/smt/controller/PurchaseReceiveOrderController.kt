@@ -14,17 +14,19 @@ class PurchaseReceiveOrderController constructor(
     var responseObjectMap: ResponseObjectMap,
     var purchaseReceiveOrderService: PurchaseReceiveOrderService,
 ) {
-
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE','USER')")
     @GetMapping("/PurchaseReceive")
     fun findAllPor(): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.findAllPor())
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @GetMapping("PurchaseReceive/por/{id}")
     fun findPor(@PathVariable id: Int): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.findPorDetail(id))
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @GetMapping("PurchaseReceive/{proId}/{code}/{suppId}")
     fun findPro(
         @PathVariable proId: Int,
@@ -36,11 +38,13 @@ class PurchaseReceiveOrderController constructor(
         return responseObjectMap.responseOBJ(100, purchaseReceiveOrderService.findProOrderDetail(proId, code, suppId)!!)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @PostMapping("/PurchaseReceive/{empId}")
     fun addPor(@PathVariable empId: Int, @RequestBody req: PurchaseReceiveOrderRequest): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.addPurchaseReceive(empId, req)!!)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @PutMapping("/PurchaseReceive/{empId}/{crId}/{porId}")
     fun updatePor(
         @PathVariable empId: Int,
@@ -54,6 +58,7 @@ class PurchaseReceiveOrderController constructor(
             req)!!)
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @DeleteMapping("PurchaseReceive/{id}")
     fun deleteById(@PathVariable id: Int): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.deletePor(id))
