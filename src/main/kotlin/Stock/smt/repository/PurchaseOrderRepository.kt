@@ -26,4 +26,6 @@ interface PurchaseOrderRepository: JpaRepository<PurchaseOrder, Int> {
             "WHERE p.id= ?1")
     @Transactional
     fun findPurchase(id: Int): PoDTO
+
+    fun findByCodeAndSupplier(code: String , supplier: Supplier): PurchaseOrder?
 }

@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface PurchaseReceiveOrderDetailRepository: JpaRepository<PurchaseReceiveDetail, Int> {
     fun findByIdAndStatusIsTrue(id: Int): PurchaseReceiveDetail?
-    @Query("SELECT pd FROM PurchaseOrderDetail pd WHERE pd.product.id = ?1 AND pd.purchaseOrder.code = ?2")
+    @Query("SELECT pd FROM PurchaseOrderDetail pd WHERE pd.product.id = ?1 AND pd.purchaseOrder.code = ?2 AND pd.purchaseOrder.supplier.id = ?3")
     @Transactional
-    fun findProductOrder(proId: Int, code: String):PurchaseOrderDetail?
+    fun findProductOrder(proId: Int, code: String, supplierId: Int): PurchaseOrderDetail?
     @Query("SELECT prd FROM PurchaseReceiveDetail prd WHERE prd.product.id = ?1 AND prd.purchaseReceive.id = ?2 ")
     @Transactional
     fun findPord(proId: Int, pordId: Int): PurchaseReceiveDetail?

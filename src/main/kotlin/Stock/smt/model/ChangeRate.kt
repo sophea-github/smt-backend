@@ -11,7 +11,6 @@ class ChangeRate(
     @Column(unique = true)
     var id: Int,
     var type: String,
-    var rate: Float? = null,
     var symbol: String,
     var description: String,
     var status: Boolean = true,

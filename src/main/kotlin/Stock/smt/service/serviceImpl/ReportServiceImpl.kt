@@ -4,6 +4,8 @@ import Stock.smt.model.custom.ResponseObjectMap
 import Stock.smt.model.custom.dto.PRecieveDTO
 import Stock.smt.model.custom.dto.ProductDTO
 import Stock.smt.model.custom.dto.ReportAdjDto
+import Stock.smt.model.custom.exception.CustomException
+import Stock.smt.model.custom.exception.CustomNotFoundException
 import Stock.smt.repository.AdjustmentRepository
 import Stock.smt.repository.ProductRepository
 import Stock.smt.repository.PurchaseReceiveOrderRepository
@@ -25,16 +27,20 @@ import kotlin.collections.HashMap
 
 
 @Service
-class ReportServiceImpl: ReportService {
+class ReportServiceImpl : ReportService {
 
     @Autowired
     lateinit var productRepository: ProductRepository
+
     @Autowired
     lateinit var purchaseReceiveOrderRepository: PurchaseReceiveOrderRepository
+
     @Autowired
     lateinit var adjustmentRepository: AdjustmentRepository
+
     @Autowired
     lateinit var responseObjectMap: ResponseObjectMap
+
     @Autowired
     lateinit var response: HttpServletResponse
 
@@ -44,10 +50,10 @@ class ReportServiceImpl: ReportService {
         val file: File = ResourceUtils.getFile("classpath:ReportProduct.jrxml")
         val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
         val dataSource = JRBeanCollectionDataSource(p)
-        val parameters: MutableMap<String,Any> =  HashMap()
-        parameters["createdBy"]="Java"
+        val parameters: MutableMap<String, Any> = HashMap()
+        parameters["createdBy"] = "Java"
 //        println("para:"+ parameters)
-        val jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, dataSource)
+        val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource)
         /**
          * export to pdf
          *
@@ -70,57 +76,63 @@ class ReportServiceImpl: ReportService {
         return "Export Success"
     }
 
-    override fun generateReportPurchase(startDate: Date, endDate: Date): String {
-        val p: List<PRecieveDTO> = purchaseReceiveOrderRepository.reportPurchase(startDate,endDate)
-        val file: File = ResourceUtils.getFile("classpath:ReportPurchase.jrxml")
-        val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
-        val dataSource = JRBeanCollectionDataSource(p)
-        val parameters: MutableMap<String,Any> =  HashMap()
-        parameters["start_date"]=startDate
-        parameters["end_date"]=endDate
-//        println("para:"+ parameters)
-        val jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, dataSource)
-
-        /**
-         * 3- export to Excel sheet
-         */
-        val exporter: JRXlsxExporter = JRXlsxExporter()
-        val reportConfigXLS = SimpleXlsxReportConfiguration()
-        reportConfigXLS.sheetNames = arrayOf("ReportPurchase")
-        exporter.setConfiguration(reportConfigXLS)
-        exporter.setExporterInput(SimpleExporterInput(jasperPrint))
-        exporter.exporterOutput = SimpleOutputStreamExporterOutput(response.outputStream)
-        response.setHeader("Content-Disposition", "attachment;filename=Purchase.xlsx")
-        response.contentType = "application/octet-stream"
-        exporter.exportReport()
-        return "Success !!"
-//        responseObjectMap.responseObj("Success")
+    override fun generateReportPurchase(startDate: Date, endDate: Date): MutableMap<String, Any> {
+        val check = purchaseReceiveOrderRepository.findPurchaseOrderRecieve(startDate, endDate)
+        if (check.isEmpty()) {
+            return responseObjectMap.responseOBJ(501 , "Not have data !!")
+        } else {
+            val p: List<PRecieveDTO> = purchaseReceiveOrderRepository.reportPurchase(startDate, endDate)
+            val file: File = ResourceUtils.getFile("classpath:ReportPurchase.jrxml")
+            val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
+            val dataSource = JRBeanCollectionDataSource(p)
+            val parameters: MutableMap<String, Any> = HashMap()
+            parameters["start_date"] = startDate
+            parameters["end_date"] = endDate
+            val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource)
+            /**
+             * 3- export to Excel sheet
+             */
+            val exporter: JRXlsxExporter = JRXlsxExporter()
+            val reportConfigXLS = SimpleXlsxReportConfiguration()
+            reportConfigXLS.sheetNames = arrayOf("ReportPurchase")
+            exporter.setConfiguration(reportConfigXLS)
+            exporter.setExporterInput(SimpleExporterInput(jasperPrint))
+            exporter.exporterOutput = SimpleOutputStreamExporterOutput(response.outputStream)
+            response.setHeader("Content-Disposition", "attachment;filename=Purchase.xlsx")
+            response.contentType = "application/octet-stream"
+            exporter.exportReport()
+            return responseObjectMap.responseObj("Success")
+        }
     }
 
-    override fun generateReportAdjustment(adjustment: String, startDate: Date, endDate: Date): String {
-        val p: List<ReportAdjDto> = adjustmentRepository.adjustmentReport(adjustment,startDate,endDate)
-        val file: File = ResourceUtils.getFile("classpath:ReportAdj.jrxml")
-        val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
-        val dataSource = JRBeanCollectionDataSource(p)
-        val parameters: MutableMap<String,Any> =  HashMap()
-        parameters["startDate"]=startDate
-        parameters["endDate"]=endDate
-        parameters["adjustment"]=adjustment
-//        println("para:"+ parameters)
-        val jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, dataSource)
+    override fun generateReportAdjustment(adjustment: String, startDate: Date, endDate: Date): MutableMap<String, Any> {
+        val check = adjustmentRepository.findAdjustment(adjustment, startDate, endDate)
+        if (check.isEmpty()) {
+            return responseObjectMap.responseOBJ(501, "Data not have !!")
+        } else {
+            val p: List<ReportAdjDto> = adjustmentRepository.adjustmentReport(adjustment, startDate, endDate)
+            val file: File = ResourceUtils.getFile("classpath:ReportAdj.jrxml")
+            val jasperReport = JasperCompileManager.compileReport(file.absolutePath)
+            val dataSource = JRBeanCollectionDataSource(p)
+            val parameters: MutableMap<String, Any> = HashMap()
+            parameters["startDate"] = startDate
+            parameters["endDate"] = endDate
+            parameters["adjustment"] = adjustment
+            val jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource)
 
-        /**
-         * 3- export to Excel sheet
-         */
-        val exporter: JRXlsxExporter = JRXlsxExporter()
-        val reportConfigXLS = SimpleXlsxReportConfiguration()
-        reportConfigXLS.sheetNames = arrayOf("ReportAddjustment")
-        exporter.setConfiguration(reportConfigXLS)
-        exporter.setExporterInput(SimpleExporterInput(jasperPrint))
-        exporter.exporterOutput = SimpleOutputStreamExporterOutput(response.outputStream)
-        response.setHeader("Content-Disposition", "attachment;filename=Addjustment.xlsx")
-        response.contentType = "application/octet-stream"
-        exporter.exportReport()
-        return "Success !!"
+            /**
+             * 3- export to Excel sheet
+             */
+            val exporter: JRXlsxExporter = JRXlsxExporter()
+            val reportConfigXLS = SimpleXlsxReportConfiguration()
+            reportConfigXLS.sheetNames = arrayOf("ReportAddjustment")
+            exporter.setConfiguration(reportConfigXLS)
+            exporter.setExporterInput(SimpleExporterInput(jasperPrint))
+            exporter.exporterOutput = SimpleOutputStreamExporterOutput(response.outputStream)
+            response.setHeader("Content-Disposition", "attachment;filename=Addjustment.xlsx")
+            response.contentType = "application/octet-stream"
+            exporter.exportReport()
+            return responseObjectMap.responseObj("Success !!")
+        }
     }
 }

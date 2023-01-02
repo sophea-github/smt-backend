@@ -16,7 +16,6 @@ class ChangeRateServiceImpl: ChangeRateService {
     override fun updateObj(id: Int, t: ChangeRate): ChangeRate? {
         val cr = changeRateRepository.findByIdAndStatusIsTrue(id)
         cr?.type = t.type
-        cr?.rate = t.rate
         cr?.symbol = t.symbol
         cr?.description = t.description
         return changeRateRepository.save(cr!!)

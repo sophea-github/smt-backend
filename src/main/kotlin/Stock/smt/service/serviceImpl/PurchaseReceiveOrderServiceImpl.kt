@@ -47,8 +47,8 @@ class PurchaseReceiveOrderServiceImpl: PurchaseReceiveOrderService {
     override fun pagination(q: String?, page: Int, size: Int): Page<PurchaseReceive> {
         TODO("Not yet implemented")
     }
-    override fun findProOrderDetail(proId: Int, code: String): PurchaseOrderDetail? {
-        return purchaseReceiveOrderDetailRepository.findProductOrder(proId,code)
+    override fun findProOrderDetail(proId: Int, code: String,suppId: Int): PurchaseOrderDetail? {
+        return purchaseReceiveOrderDetailRepository.findProductOrder(proId,code, suppId)
     }
     override fun findAllPor(): List<PurchaseReceiveDTO> {
         return purchaseReceiveOrderRepository.findCountPor()

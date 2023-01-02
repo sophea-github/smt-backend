@@ -72,6 +72,7 @@ class ProductServiceImpl : ProductService {
         val itm = itemRepository.findByIdAndStatusIsTrue(itmId)
         val proId = productRepository.findByIdAndStatusIsTrue(id)
         try {
+                proId?.code = product.code
                 proId?.name = product.name
                 proId?.itemVariantUom = itm
                 proId?.category = cat

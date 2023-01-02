@@ -36,4 +36,13 @@ interface AdjustmentRepository: JpaRepository<Adjustment,Int> {
         group by pd.code,adt.type,pd.code,pd.name, ct.name,pd.qty,itm.item_variant_name
     """)
     fun adjustmentReport(adjustment: String, startDate: Date, endDate: Date): List<ReportAdjDto>
+
+    @Query("""
+        SELECT adj FROM Adjustment adj 
+        JOIN AdjustmentType adt on adj.adjustmentType.id = adt.id 
+        WHERE adt.type = :type
+        AND adj.adjustmentDate >= :startDate 
+        AND adj.adjustmentDate <= :endDate
+    """)
+    fun findAdjustment(type: String, startDate: Date,endDate: Date): List<Adjustment>
 }

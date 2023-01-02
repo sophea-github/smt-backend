@@ -12,36 +12,50 @@ import org.springframework.web.bind.annotation.*
 @CrossOrigin
 class PurchaseReceiveOrderController constructor(
     var responseObjectMap: ResponseObjectMap,
-    var purchaseReceiveOrderService: PurchaseReceiveOrderService
-    ) {
+    var purchaseReceiveOrderService: PurchaseReceiveOrderService,
+) {
 
     @GetMapping("/PurchaseReceive")
-    fun findAllPor(): MutableMap<String,Any>{
+    fun findAllPor(): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.findAllPor())
     }
+
     @GetMapping("PurchaseReceive/por/{id}")
-    fun findPor(@PathVariable id: Int): MutableMap<String,Any> {
+    fun findPor(@PathVariable id: Int): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.findPorDetail(id))
     }
 
-    @GetMapping("PurchaseReceive/{proId}/{code}")
-    fun findPro(@PathVariable proId: Int,@PathVariable code: String ): MutableMap<String,Any>{
-        val p = purchaseReceiveOrderService.findProOrderDetail(proId, code)
-            ?: return responseObjectMap.responseOBJ(500,"Not Found !!")
-        return responseObjectMap.responseOBJ(100,purchaseReceiveOrderService.findProOrderDetail(proId,code)!!)
+    @GetMapping("PurchaseReceive/{proId}/{code}/{suppId}")
+    fun findPro(
+        @PathVariable proId: Int,
+        @PathVariable code: String,
+        @PathVariable suppId: Int,
+    ): MutableMap<String, Any> {
+        val p = purchaseReceiveOrderService.findProOrderDetail(proId, code, suppId)
+            ?: return responseObjectMap.responseOBJ(500, "Not Found !!")
+        return responseObjectMap.responseOBJ(100, purchaseReceiveOrderService.findProOrderDetail(proId, code, suppId)!!)
     }
 
     @PostMapping("/PurchaseReceive/{empId}")
-    fun addPor(@PathVariable empId: Int,@RequestBody req: PurchaseReceiveOrderRequest): MutableMap<String, Any> {
-        return responseObjectMap.responseObj(purchaseReceiveOrderService.addPurchaseReceive(empId,req)!!)
+    fun addPor(@PathVariable empId: Int, @RequestBody req: PurchaseReceiveOrderRequest): MutableMap<String, Any> {
+        return responseObjectMap.responseObj(purchaseReceiveOrderService.addPurchaseReceive(empId, req)!!)
     }
+
     @PutMapping("/PurchaseReceive/{empId}/{crId}/{porId}")
-    fun updatePor(@PathVariable empId: Int, @PathVariable crId: Int, @PathVariable porId: Int,@RequestBody req: PurchaseReceiveOrderRequest): MutableMap<String, Any>{
-        return responseObjectMap.responseObj(purchaseReceiveOrderService.updatePurchaseReceive(empId,crId,porId,req)!!)
+    fun updatePor(
+        @PathVariable empId: Int,
+        @PathVariable crId: Int,
+        @PathVariable porId: Int,
+        @RequestBody req: PurchaseReceiveOrderRequest,
+    ): MutableMap<String, Any> {
+        return responseObjectMap.responseObj(purchaseReceiveOrderService.updatePurchaseReceive(empId,
+            crId,
+            porId,
+            req)!!)
     }
 
     @DeleteMapping("PurchaseReceive/{id}")
-    fun deleteById(@PathVariable id: Int) : MutableMap<String, Any>{
+    fun deleteById(@PathVariable id: Int): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.deletePor(id))
     }
 

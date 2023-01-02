@@ -13,7 +13,7 @@ interface PurchaseReceiveOrderService: BaseFun<PurchaseReceive, Int> {
     fun addPurchaseReceive(empId: Int,req: PurchaseReceiveOrderRequest): MutableMap<String,Any>
     fun updatePurchaseReceive(empId: Int, crId: Int, porId: Int , req: PurchaseReceiveOrderRequest): MutableMap<String,Any>
     fun findAllPor(): List<PurchaseReceiveDTO>
-    fun findProOrderDetail(proId: Int,code: String): PurchaseOrderDetail?
+    fun findProOrderDetail(proId: Int,code: String, suppId: Int): PurchaseOrderDetail?
     fun findPorDetail(id: Int): PorDTO
     fun deletePor(id: Int): MutableMap<String,Any>
 //    fun reportPurchase(startDate: Date, endDate: Date):

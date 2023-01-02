@@ -93,10 +93,10 @@ class AdjustmentServiceImpl: AdjustmentService {
                     )
                 )
 
-                if(adjType.id == 7 ){
+                if(adjType.id == 8 ){
                         pro.qty += it.qty
                         pro.amt = pro.qty * pro.itemVariantUom!!.conversion_factor
-                }else if(adjType.id == 6){
+                }else if(adjType.id == 9){
                     if(pro.qty >= it.qty){
                         pro.qty -= it.qty
                         pro.amt = pro.qty * pro.itemVariantUom!!.conversion_factor
