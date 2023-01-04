@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class AdjustmentTypeController {
     @Autowired lateinit var adjustmentTypeService: AdjustmentTypeService
     @Autowired lateinit var responseObjectMap: ResponseObjectMap
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/adjustmentType")
     fun findAll(): MutableMap<String,Any>{
         return responseObjectMap.responseObj(adjustmentTypeService.findAll()!!)

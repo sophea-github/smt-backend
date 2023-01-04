@@ -14,7 +14,7 @@ class SupplierController constructor(
     var supplierService: SupplierService,
     var responseObjectMap: ResponseObjectMap,
 ) {
-    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
+//    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @GetMapping("/supplier")
     fun findAll(): MutableMap<String, Any> = responseObjectMap.responseObj(supplierService.findAll()!!)
 

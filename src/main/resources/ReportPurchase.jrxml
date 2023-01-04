@@ -28,7 +28,7 @@
     <field name="subtotal" class="java.lang.Double">
 
     </field>
-    <variable name="total" class="java.lang.Integer" calculation="Sum">
+    <variable name="total" class="java.lang.Float" calculation="Sum">
         <variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
     </variable>
     <group name="code">

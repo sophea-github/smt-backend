@@ -31,7 +31,6 @@ class UserController {
         return userService.authenticateUser(loginDto)
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/user")
     fun getUserRole(): MutableMap<String, Any> = responseObjectMap.responseObj(userRoleRepository.findAll())
 

@@ -19,7 +19,7 @@ class RoleController {
     @Autowired
     lateinit var responseObjectMap: ResponseObjectMap
 
-    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE','USER')")
     @GetMapping("/role")
     fun getAll(): MutableMap<String, Any> = responseObjectMap.responseObj(roleService.findAll()!!)
 }

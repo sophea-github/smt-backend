@@ -14,7 +14,7 @@ class AdjustmentController {
     @Autowired lateinit var adjustmentService: AdjustmentService
     @Autowired lateinit var responseObjectMap: ResponseObjectMap
 
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/adjustment/{id}")
     fun findAll(@PathVariable id:Int): MutableMap<String,Any>{
         return responseObjectMap.responseObj(adjustmentService.findAdjustment(id)!!)

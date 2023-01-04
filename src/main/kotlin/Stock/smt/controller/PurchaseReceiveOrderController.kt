@@ -2,6 +2,7 @@ package Stock.smt.controller
 
 import Stock.smt.model.custom.dto.PurchaseReceiveOrderRequest
 import Stock.smt.model.custom.ResponseObjectMap
+import Stock.smt.model.custom.exception.CustomBadRequestException
 import Stock.smt.service.PurchaseReceiveOrderService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -14,7 +15,7 @@ class PurchaseReceiveOrderController constructor(
     var responseObjectMap: ResponseObjectMap,
     var purchaseReceiveOrderService: PurchaseReceiveOrderService,
 ) {
-    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','PURCHASE','USER')")
     @GetMapping("/PurchaseReceive")
     fun findAllPor(): MutableMap<String, Any> {
         return responseObjectMap.responseObj(purchaseReceiveOrderService.findAllPor())
@@ -35,8 +36,9 @@ class PurchaseReceiveOrderController constructor(
     ): MutableMap<String, Any> {
         val p = purchaseReceiveOrderService.findProOrderDetail(proId, code, suppId)
             ?: return responseObjectMap.responseOBJ(500, "Not Found !!")
-        return responseObjectMap.responseOBJ(100, purchaseReceiveOrderService.findProOrderDetail(proId, code, suppId)!!)
+        return responseObjectMap.responseOBJ(100, p)
     }
+//    purchaseReceiveOrderService.findProOrderDetail(proId, code, suppId)
 
     @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @PostMapping("/PurchaseReceive/{empId}")
@@ -52,7 +54,8 @@ class PurchaseReceiveOrderController constructor(
         @PathVariable porId: Int,
         @RequestBody req: PurchaseReceiveOrderRequest,
     ): MutableMap<String, Any> {
-        return responseObjectMap.responseObj(purchaseReceiveOrderService.updatePurchaseReceive(empId,
+        return responseObjectMap.responseObj(purchaseReceiveOrderService.updatePurchaseReceive(
+            empId,
             crId,
             porId,
             req)!!)

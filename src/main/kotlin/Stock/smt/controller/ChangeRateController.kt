@@ -14,7 +14,7 @@ class ChangeRateController constructor(
     var changeRateservice: ChangeRateService,
     var responseObjectMap: ResponseObjectMap
 ) {
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/changeRate")
     fun getAll(): MutableMap<String,Any> = responseObjectMap.responseObj(changeRateservice.findAll()!!)
     @PreAuthorize("hasRole('ADMIN')")

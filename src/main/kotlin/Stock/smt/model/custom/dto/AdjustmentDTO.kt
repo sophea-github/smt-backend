@@ -7,5 +7,6 @@ interface AdjustmentDTO {
     var code: String
     var adjustmentDate: Date
     var adjustmentType: AdjustmentType?
+    var description: String
     var adjustmentDetail: MutableList<AdjustmentDetail>
 }

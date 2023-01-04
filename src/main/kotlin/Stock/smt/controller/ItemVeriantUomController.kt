@@ -15,7 +15,7 @@ class ItemVariantUomController constructor(
     private val uomDetailService: ItemVeriantUomService,
     private val responseObjectMap: ResponseObjectMap
 ) {
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/uom_detail")
     fun findAll(): MutableMap<String,Any> = responseObjectMap.responseObj(uomDetailService.findAll()!!)
     @PreAuthorize("hasRole('ADMIN')")

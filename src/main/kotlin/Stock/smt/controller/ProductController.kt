@@ -20,7 +20,7 @@ class ProductController constructor(
     var responseObjectMap: ResponseObjectMap,
     var productRepository: ProductRepository,
 ) {
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/product")
     fun getAll(): MutableMap<String, Any> = responseObjectMap.responseObj(productService.findAll()!!)
 

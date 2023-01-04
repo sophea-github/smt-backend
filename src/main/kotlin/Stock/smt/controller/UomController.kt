@@ -14,7 +14,7 @@ class UomController constructor(
     var uomService: UomService,
     var responseObjectMap: ResponseObjectMap,
 ) {
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/uom")
     fun findAll(): MutableMap<String, Any> = responseObjectMap.responseObj(uomService.findAll()!!)
 
