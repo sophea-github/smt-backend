@@ -21,12 +21,12 @@ class SupplierController constructor(
     @PreAuthorize("hasAnyRole('ADMIN','PURCHASE')")
     @PostMapping("/supplier")
     fun saveAll(@RequestBody supplier: Supplier): MutableMap<String, Any> =
-        responseObjectMap.responseObj(supplierService.saveAll(supplier)!!)
+        responseObjectMap.responseObject(supplierService.addSupplier(supplier)!!)
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/supplier/{id}")
     fun updateObj(@PathVariable id: Int, @RequestBody supplier: Supplier): MutableMap<String, Any> =
-        responseObjectMap.responseObj(supplierService.updateObj(id, supplier)!!)
+        responseObjectMap.responseObj(supplierService.updateSupplier(id, supplier)!!)
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/supplier/{id}")

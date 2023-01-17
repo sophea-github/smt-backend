@@ -17,7 +17,6 @@ class Supplier (
     var address: String,
     var description: String,
     var status: Boolean = true,
-
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "supplier")
     var purchaseOrder: MutableList<PurchaseOrder>? = null

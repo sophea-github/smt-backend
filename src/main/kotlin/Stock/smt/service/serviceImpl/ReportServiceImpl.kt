@@ -129,7 +129,7 @@ class ReportServiceImpl : ReportService {
             exporter.setConfiguration(reportConfigXLS)
             exporter.setExporterInput(SimpleExporterInput(jasperPrint))
             exporter.exporterOutput = SimpleOutputStreamExporterOutput(response.outputStream)
-            response.setHeader("Content-Disposition", "attachment;filename=Addjustment.xlsx")
+            response.setHeader("Content-Disposition", "attachment;filename=Adjustment.xlsx")
             response.contentType = "application/octet-stream"
             exporter.exportReport()
             return responseObjectMap.responseObj("Success !!")
