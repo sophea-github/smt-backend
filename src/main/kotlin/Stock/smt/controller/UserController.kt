@@ -37,12 +37,12 @@ class UserController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/user/{id}")
     fun save(@PathVariable id: Int, @RequestBody t: UserDTO): MutableMap<String, Any> {
-        if (!userRepository.existsByEmail(t.email) && !userRepository.existsByContact(t.contact)) {
-            return responseObjectMap.responseOBJ(200, userService.register(id, t)!!)
+        return if (!userRepository.existsByEmail(t.email) && !userRepository.existsByContact(t.contact)) {
+            responseObjectMap.responseOBJ(200, userService.register(id, t)!!)
         } else if (userRepository.existsByEmail(t.email) || userRepository.existsByContact(t.contact)) {
-            return responseObjectMap.responseOBJ(500, "Checked data duplicate !!")
+            responseObjectMap.responseOBJ(500, "Checked data duplicate !!")
         } else {
-            return responseObjectMap.responseOBJ(400, "Check Field Again")
+            responseObjectMap.responseOBJ(400, "Check Field Again")
         }
     }
 

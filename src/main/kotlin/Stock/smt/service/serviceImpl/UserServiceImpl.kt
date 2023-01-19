@@ -47,9 +47,12 @@ class UserServiceImpl: UserService {
     }
     override fun delete(id: Int) {
         try {
+            println("id:$id")
             userRoleRepository.deleteById(id)
             userRepository.deleteById(id)
-        }catch (e: Exception){}
+        }catch (e: Exception){
+            println("e:$e")
+        }
     }
     override fun pagination(q: String?, page: Int, size: Int): Page<User> {
         TODO("Not yet implemented")
